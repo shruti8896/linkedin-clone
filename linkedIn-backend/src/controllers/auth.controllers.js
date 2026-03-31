@@ -24,10 +24,17 @@ export const login = async (req, res) => {
   }
 };
 
-export const register = async (req, res) => { 
-  const { name, email, password, role } = req.body;
+export const register = async (req, res) => {
+  const { firstname, lastname, username, email, password } = req.body;
+  console.log(req.body);
   try {
-    const response = await registerService({ name, email, password, role });
+    const response = await registerService({
+      firstname,
+      lastname,
+      username,
+      email,
+      password,
+    });
     res.status(201).json(response);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -39,7 +46,7 @@ export const logout = async (req, res) => {
   try {
     const refreshToken = req.cookies.refreshToken;
     await logoutService(refreshToken);
-    res.clearCookie("refreshToken")
+    res.clearCookie("refreshToken");
     return res.status(200).json({ message: "logout successfully!!" });
   } catch (error) {
     console.error(error);
