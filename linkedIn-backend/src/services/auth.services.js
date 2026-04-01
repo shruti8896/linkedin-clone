@@ -1,4 +1,3 @@
-import { compare } from "bcryptjs";
 import User from "../models/user.models.js";
 import { comparePassword, hashPassword } from "../utils/hashPassword.js";
 import { genAccessToken, genRefreshToken } from "../config/token.js";
@@ -10,14 +9,15 @@ export const registerService = async ({
   password,
 }) => {
   const hashedPassword = await hashPassword(password);
-  const emailExists = await User.findOne({ email });
-  console.log("0--------------------------=0");
-  if (emailExists) {
-    throw new Error("Email already exists");
-  }
-  const userExists = await User.findOne({ username });
-  if (userExists) {
-    throw new Error("user id  already exists");
+  //TODO:normalize email and username, test@gmail.com != Test@gmail.com
+  const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+  if (existingUser) {
+    if (existingUser?.email === email) {
+      throw new Error("Email already exists");
+    }
+    if (existingUser?.username === username) {
+      throw new Error("username  already exists");
+    }
   } else {
     const newUser = await User.create({
       firstname,
@@ -26,15 +26,28 @@ export const registerService = async ({
       email,
       password: hashedPassword,
     });
-    return newUser;
+    const accessToken = genAccessToken(newUser._id);
+    const refreshToken = genRefreshToken(newUser._id);
+    newUser.refreshToken = refreshToken;
+    await newUser.save();
+
+    const userData = {
+      _id: newUser._id,
+      firstname: newUser.firstname,
+      lastname: newUser.lastname,
+      username: newUser.username,
+      email: newUser.email,
+    };
+
+    return { userData, accessToken, refreshToken };
   }
 };
 
-export const loginService = async (email, password) => {
+export const loginService = async ({ email, password }) => {
   console.log(email);
   const user = await User.findOne({ email });
   if (!user) {
-    throw new Error("User not found");
+    throw new Error("Invalid Credentials");
   }
   //basic password validation
   const passwordMatch = await comparePassword(password, user.password);
@@ -42,6 +55,9 @@ export const loginService = async (email, password) => {
   if (passwordMatch) {
     const accessToken = genAccessToken(user._id);
     const refreshToken = genRefreshToken(user._id);
+    user.refreshToken = refreshToken;
+    await user.save();
+    //TODO: store refresh token and rotate on every request
     const userData = {
       _id: user._id,
       firstname: user.firstname,

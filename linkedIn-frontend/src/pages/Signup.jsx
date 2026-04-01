@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import logo from "../assets/logo.svg";
 import { useNavigate } from "react-router";
-import {  signUpUser } from "../services/authServices";
+import { signUpUser } from "../services/authServices";
+import toast from "react-hot-toast";
 
 const Signup = () => {
   // const { serverURL } = useAuthContext();
@@ -14,27 +15,36 @@ const Signup = () => {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState("");
 
   function handleSignUp(e) {
-    // e.preventDefault();
     const { name, value } = e.target;
+    setErr("");
     setSignUpData((prev) => {
       const updateddata = { ...prev, [name]: value };
-      console.log(updateddata);
+
       return updateddata;
     });
-    // console.log(signUpData);
   }
 
   async function sendSignupData(e) {
     e.preventDefault();
+    setLoading(true);
     try {
       const data = await signUpUser(signUpData);
       if (data?.data) {
+        setLoading(false);
         navigate("/login");
       }
     } catch (error) {
-      console.error("Signup failed:", error);
+      // console.log(error.response);
+      setLoading(false);
+      if (error.response.status === 403) {
+        // alert(error.response.data.message);
+        setErr(error.response.data.message);
+        toast.error(error.response.data.message);
+      }
     }
   }
   return (
@@ -103,9 +113,13 @@ const Signup = () => {
             {showButton ? "Hide" : "Show?"}
           </button>
         </div>
+        {err && <p className="text-red-400 text-sm">{err}</p>}
 
-        <button className="w-full rounded-4xl bg-blue-600 p-3 text-slate-50 mt-5">
-          Sign Up
+        <button
+          disabled={loading}
+          className="w-full rounded-4xl bg-blue-600 p-3 text-slate-50 mt-5"
+        >
+          {loading ? "Loading..." : "Sign Up"}
         </button>
         <p
           className="text-center cursor-pointer"
