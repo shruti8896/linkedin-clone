@@ -35,7 +35,8 @@ const Signup = () => {
       const data = await signUpUser(signUpData);
       if (data?.data) {
         setLoading(false);
-        navigate("/login");
+        navigate("/dashboard");
+        //store the access token in local storage
       }
     } catch (error) {
       // console.log(error.response);

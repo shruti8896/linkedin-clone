@@ -2,9 +2,11 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import logo from "../assets/logo.svg";
+import { loginUser } from "../services/authServices";
+import toast from "react-hot-toast";
 const Login = () => {
   const navigate = useNavigate();
-  const [logindata, setLoginData] = useState({
+  const [loginData, setLoginData] = useState({
     email: "",
     password: "",
   });
@@ -21,9 +23,34 @@ const Login = () => {
       return updateddata;
     });
   }
-  const sendLoginData = (userData) => {
-    console.log(userData);
-  };
+  async function sendLoginData(e) {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const response = await loginUser(loginData);
+
+      console.log(response);
+      if (response?.data) {
+        setLoading(false);
+        //store the accesstoken in local storage
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+      if (error?.response?.status === 401) {
+        const msg = error.response.data?.message || "Login failed";
+        setErr(msg);
+        toast.error(msg);
+      } else {
+        toast.error("Something went wrong");
+      }
+    }
+    finally{
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="w-full bg-[white] flex flex-col justify-center items-center">
       <div className="p-4 lg:p-7 w-full">
@@ -41,7 +68,7 @@ const Login = () => {
           type="email"
           placeholder="Email"
           name="email"
-          value={logindata.email}
+          value={loginData.email}
           onChange={(e) => handleLogin(e)}
           required
           className="w-full h-12 border-2 rounded-md focus:outline outline-blue-500 border-gray-600 text-gray-800 text-[18px] px-5 py-2.5  "
@@ -51,7 +78,7 @@ const Login = () => {
             type={showButton ? "text" : "password"}
             placeholder="Password"
             name="password"
-            value={logindata.password}
+            value={loginData.password}
             onChange={(e) => handleLogin(e)}
             required
             className="w-full text-[18px] focus:outline-none text-gray-800  px-5 py-2.5 "
@@ -74,7 +101,7 @@ const Login = () => {
         </button>
         <p
           className="text-center cursor-pointer"
-          onClick={() => navigate("/dahboard")}
+          onClick={() => navigate("/signup")}
         >
           Don't have an account?{" "}
           <span className="mr-3 font-semibold text-blue-500 ">Sign Up</span>

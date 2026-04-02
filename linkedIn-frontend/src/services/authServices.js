@@ -15,3 +15,15 @@ export const signUpUser = async (userData) => {
 
   return result;
 };
+
+export const loginUser = async (userData) => {
+  let result = await axios.post(
+    "http://localhost:8080/api/auth/login",
+    userData,
+    {
+      withCredentials: true,
+    },
+  );
+
+  return result;
+};
