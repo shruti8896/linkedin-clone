@@ -4,6 +4,8 @@ import { useNavigate } from "react-router";
 import logo from "../assets/logo.svg";
 import { loginUser } from "../services/authServices";
 import toast from "react-hot-toast";
+import { useUserContext } from "../contexts/UserContext";
+
 const Login = () => {
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
@@ -13,6 +15,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
   const [showButton, setShowButton] = useState(false);
+  const { login, setCurrentUserAccessToken } = useUserContext();
 
   function handleLogin(e) {
     const { name, value } = e.target;
@@ -31,8 +34,19 @@ const Login = () => {
 
       console.log(response);
       if (response?.data) {
-        setLoading(false);
         //store the accesstoken in local storage
+        const accessToken = response.data.accessToken;
+        // console.log(accessToken);
+        const user = response.data.user;
+        try {
+          // console.log("Before login:", user);
+          setCurrentUserAccessToken(accessToken);
+          login(user);
+
+          // console.log("After login success");
+        } catch (e) {
+          console.error("Login function error:", e);
+        }
         navigate("/dashboard");
       }
     } catch (error) {
@@ -45,9 +59,8 @@ const Login = () => {
       } else {
         toast.error("Something went wrong");
       }
-    }
-    finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   }
 

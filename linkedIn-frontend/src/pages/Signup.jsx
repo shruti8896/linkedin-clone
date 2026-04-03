@@ -3,9 +3,11 @@ import logo from "../assets/logo.svg";
 import { useNavigate } from "react-router";
 import { signUpUser } from "../services/authServices";
 import toast from "react-hot-toast";
+import { useUserContext } from "../contexts/UserContext";
 
 const Signup = () => {
   // const { serverURL } = useAuthContext();
+
   const navigate = useNavigate();
   const [showButton, setShowButton] = useState(false);
   const [signUpData, setSignUpData] = useState({
@@ -17,6 +19,7 @@ const Signup = () => {
   });
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
+  const { login, setCurrentUserAccessToken } = useUserContext();
 
   function handleSignUp(e) {
     const { name, value } = e.target;
@@ -33,14 +36,33 @@ const Signup = () => {
     setLoading(true);
     try {
       const data = await signUpUser(signUpData);
+      // console.log(data);
       if (data?.data) {
+        console.log("entered block");
         setLoading(false);
+
+        const user = data.data.user;
+        const accessToken = data.data.accessToken;
+        console.log(accessToken);
+        console.log(user);
+        try {
+          console.log("Before login:", user);
+          setCurrentUserAccessToken(accessToken);
+
+          login(user);
+
+          console.log("After login success");
+        } catch (e) {
+          console.error("Login function error:", e);
+        }
+        console.log("saving user done");
         navigate("/dashboard");
         //store the access token in local storage
       }
     } catch (error) {
-      // console.log(error.response);
+      console.log(error.response);
       setLoading(false);
+
       if (error.response.status === 403) {
         // alert(error.response.data.message);
         setErr(error.response.data.message);
