@@ -72,6 +72,10 @@ export const loginService = async ({ email, password }) => {
 
 export const logoutService = async (token) => {
   try {
+    await User.findOneAndUpdate(
+    { refreshToken: token },
+    { $set: { refreshToken: null } }
+  );
     // res.clearcookie("refreshToken");
   } catch (error) {
     throw error;

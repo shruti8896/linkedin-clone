@@ -27,3 +27,15 @@ export const loginUser = async (userData) => {
 
   return result;
 };
+
+export const logoutUser = async (userData) => {
+  let result = await axios.post(
+    "http://localhost:8080/api/auth/logout",
+    userData,
+    {
+      withCredentials: true,
+    },
+  );
+
+  return result;
+};

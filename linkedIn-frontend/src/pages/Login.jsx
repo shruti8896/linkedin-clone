@@ -5,6 +5,7 @@ import logo from "../assets/logo.svg";
 import { loginUser } from "../services/authServices";
 import toast from "react-hot-toast";
 import { useUserContext } from "../contexts/UserContext";
+import { getCurrentUser } from "../services/userServices";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -41,13 +42,18 @@ const Login = () => {
         try {
           // console.log("Before login:", user);
           setCurrentUserAccessToken(accessToken);
-          login(user);
+          // 🔥 fetch user again
+          const currentUser = await getCurrentUser();
+
+          login(currentUser);
+
+          navigate("/dashboard");
 
           // console.log("After login success");
         } catch (e) {
           console.error("Login function error:", e);
         }
-        navigate("/dashboard");
+        // navigate("/dashboard");
       }
     } catch (error) {
       setLoading(false);

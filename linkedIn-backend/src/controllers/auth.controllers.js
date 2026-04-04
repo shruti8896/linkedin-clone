@@ -62,9 +62,10 @@ export const register = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    const userId = req.user.id;
+    console.log("in logout")
+    // const userId = req.user.id;
     const refreshToken = req.cookies.refreshToken;
-    await logoutService(userId);
+    await logoutService(refreshToken);
     res.clearCookie("refreshToken");
     return res.status(200).json({ message: "logout successfully!!" });
   } catch (error) {
@@ -72,3 +73,4 @@ export const logout = async (req, res) => {
     return res.status(500).json({ message: "logout failed!!" });
   }
 };
+ 

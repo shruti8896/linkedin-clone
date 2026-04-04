@@ -20,7 +20,7 @@ function App() {
           ) : currentUserData ? (
             <Dashboard />
           ) : (
-            <Navigate to="/" />
+            <Navigate to="/login" />
           )
         }
       />
