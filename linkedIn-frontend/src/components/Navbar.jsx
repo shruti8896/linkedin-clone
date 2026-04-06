@@ -10,6 +10,7 @@ import { BsPeopleFill } from "react-icons/bs";
 import { MdWork } from "react-icons/md";
 import { AiFillMessage } from "react-icons/ai";
 import { IoNotifications } from "react-icons/io5";
+import NavItem from "./NavItem";
 
 const Navbar = () => {
   const { setCurrentUserAccessToken, logout } = useUserContext();
@@ -29,25 +30,56 @@ const Navbar = () => {
     }
   }
   return (
-    <div className="w-full h-12 bg-white ">
+    <div className="w-full min-h-12 bg-white mb-2">
+      {" "}
       <div className="flex justify-around">
-        <img src={navLogo} alt="" className="h-10 m-2 " />{" "}
+        {" "}
+        <img src={navLogo} alt="logo" className="h-10 m-2 " />{" "}
         <div className="flex border h-10 my-auto gap-2 p-3 rounded-2xl ">
+          {" "}
           <FaSearch className="my-auto" />{" "}
-          <input type="text" placeholder="search" className="w-60" />
-        </div>
-       <div className="flex gap-7  my-auto"> <IoHomeSharp  size={30}/>
-        <BsPeopleFill size={30}/>
-        <MdWork size={30} />
-        <AiFillMessage size={30} />
-        <IoNotifications size={30} /></div>
+          <input
+            type="text"
+            placeholder="search"
+            className="md:w-60 w-20 focus:outline-none p-2"
+          />{" "}
+        </div>{" "}
+        <div className="flex gap-2 md:gap-8 px-2 items-center">
+          {" "}
+          <NavItem
+            path={"/home"}
+            icon={<IoHomeSharp size={28}  />}
+            label="Home"
+          />
+          <NavItem
+            path={"/"}
+            icon={<BsPeopleFill size={28}  />}
+            label="Network"
+          />
+          <NavItem
+            path={""}
+            icon={<MdWork size={28}  />}
+            label="Jobs"
+          />
+          <NavItem
+            path={"/"}
+            icon={<AiFillMessage size={28}  />}
+            label="Messages"
+          />
+          <NavItem
+            path={"/"}
+            icon={<IoNotifications size={28} />}
+            label="Notifications"
+          />
+        </div>{" "}
         <button
-          className="px-3 py-1  m-2 bg-blue-500 rounded-xl text-amber-50 "
+          className="px-3 py-1 m-2 bg-blue-500 rounded-xl text-amber-50 "
           onClick={handleLogout}
         >
-          Logout
+          {" "}
+          Logout{" "}
         </button>{" "}
-      </div>
+      </div>{" "}
     </div>
   );
 };
