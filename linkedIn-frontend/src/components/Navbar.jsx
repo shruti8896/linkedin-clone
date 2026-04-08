@@ -11,28 +11,24 @@ import { MdWork } from "react-icons/md";
 import { AiFillMessage } from "react-icons/ai";
 import { IoNotifications } from "react-icons/io5";
 import NavItem from "./NavItem";
+import { FaUserGroup } from "react-icons/fa6";
+import PopUpCard from "./PopUpCard";
+import ProfileImage from "../assets/profile-picture.png";
+import { useState } from "react";
 
 const Navbar = () => {
   const { setCurrentUserAccessToken, logout } = useUserContext();
+  const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
-  async function handleLogout() {
-    try {
-      const resp = await logoutUser();
-      console.log(resp);
-      //  clear frontend state
-      setCurrentUserAccessToken(null);
-      logout(null);
+  
 
-      // redirect immediately
-      navigate("/login");
-    } catch (err) {
-      console.log(err);
-    }
+  function handleShowPopup() {
+    setShowPopup((currentState)=>!currentState);
   }
   return (
-    <div className="w-full min-h-12 bg-white mb-2">
+    <div className="w-full min-h-12 bg-white ">
       {" "}
-      <div className="flex justify-around">
+      <div className="flex justify-around items-center relative ">
         {" "}
         <img src={navLogo} alt="logo" className="h-10 m-2 " />{" "}
         <div className="flex border h-10 my-auto gap-2 p-3 rounded-2xl ">
@@ -44,26 +40,21 @@ const Navbar = () => {
             className="md:w-60 w-20 focus:outline-none p-2"
           />{" "}
         </div>{" "}
-        <div className="flex gap-2 md:gap-8 px-2 items-center">
-          {" "}
+        <div className="flex gap-2  md:gap-8 items-center">
           <NavItem
             path={"/home"}
-            icon={<IoHomeSharp size={28}  />}
+            icon={<IoHomeSharp size={28} />}
             label="Home"
           />
           <NavItem
             path={"/"}
-            icon={<BsPeopleFill size={28}  />}
+            icon={<FaUserGroup size={28} />}
             label="Network"
           />
-          <NavItem
-            path={""}
-            icon={<MdWork size={28}  />}
-            label="Jobs"
-          />
+          <NavItem path={""} icon={<MdWork size={28} />} label="Jobs" />
           <NavItem
             path={"/"}
-            icon={<AiFillMessage size={28}  />}
+            icon={<AiFillMessage size={28} />}
             label="Messages"
           />
           <NavItem
@@ -72,13 +63,21 @@ const Navbar = () => {
             label="Notifications"
           />
         </div>{" "}
-        <button
+        {/* <button
           className="px-3 py-1 m-2 bg-blue-500 rounded-xl text-amber-50 "
           onClick={handleLogout}
         >
+        
           {" "}
           Logout{" "}
-        </button>{" "}
+        </button>{" "} */}
+        <img
+          src={ProfileImage}
+          alt="profile-image"
+          className="h-12 w-12 "
+          onClick={handleShowPopup}
+        />
+        {showPopup && <PopUpCard />}
       </div>{" "}
     </div>
   );
