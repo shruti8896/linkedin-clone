@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { signUpUser } from "../services/authServices";
 import toast from "react-hot-toast";
 import { useUserContext } from "../contexts/UserContext";
+import { getCurrentUser } from "../services/userServices";
 
 const Signup = () => {
   // const { serverURL } = useAuthContext();
@@ -48,15 +49,17 @@ const Signup = () => {
         try {
           console.log("Before login:", user);
           setCurrentUserAccessToken(accessToken);
+          const currentUser = await getCurrentUser();
 
-          login(user);
+          login(currentUser);
+          navigate("/dashboard");
 
           console.log("After login success");
         } catch (e) {
-          console.error("Login function error:", e);
+          console.error(" Signup error:", e);
         }
         console.log("saving user done");
-        navigate("/dashboard");
+
         //store the access token in local storage
       }
     } catch (error) {
@@ -64,6 +67,14 @@ const Signup = () => {
       setLoading(false);
 
       if (error.response.status === 403) {
+        // alert(error.response.data.message);
+        setErr(error.response.data.message);
+        toast.error(error.response.data.message);
+      }
+      if (
+        error.response.status === 400 ||
+        error.response.data.message === "username  already exists"
+      ) {
         // alert(error.response.data.message);
         setErr(error.response.data.message);
         toast.error(error.response.data.message);

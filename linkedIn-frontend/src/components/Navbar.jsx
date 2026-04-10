@@ -20,15 +20,14 @@ const Navbar = () => {
   const { setCurrentUserAccessToken, logout } = useUserContext();
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
-  
 
   function handleShowPopup() {
-    setShowPopup((currentState)=>!currentState);
+    setShowPopup((currentState) => !currentState);
   }
   return (
-    <div className="w-full min-h-12 bg-white ">
+    <div className=" min-h-12 w-full bg-white ">
       {" "}
-      <div className="flex justify-around items-center relative ">
+      <div className="flex lg:w-[70%] justify-between  mx-auto items-center relative ">
         {" "}
         <img src={navLogo} alt="logo" className="h-10 m-2 " />{" "}
         <div className="flex border h-10 my-auto gap-2 p-3 rounded-2xl ">
