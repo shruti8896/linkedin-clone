@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import { Navigate } from "react-router";
 import { useUserContext } from "./contexts/UserContext";
+import UserPage from "./pages/UserPage";
 function App() {
   const [count, setCount] = useState(0);
   const { currentUserData, loading } = useUserContext();
@@ -33,6 +34,18 @@ function App() {
             <div>Loading...</div>
           ) : currentUserData ? (
             <Dashboard />
+          ) : (
+            <Navigate to="/login" />
+          )
+        }
+      />
+      <Route
+        path="/user"
+        element={
+          loading ? (
+            <div>Loading...</div>
+          ) : currentUserData ? (
+            <UserPage />
           ) : (
             <Navigate to="/login" />
           )

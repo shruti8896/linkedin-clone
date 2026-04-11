@@ -30,6 +30,7 @@ const Navbar = () => {
       <div className="flex lg:w-[70%] justify-between  mx-auto items-center relative ">
         {" "}
         <img src={navLogo} alt="logo" className="h-10 m-2 " />{" "}
+        {/* TODO: make the search bar controlled ==> API Integration , deboucing, controlled state */}
         <div className="flex border h-10 my-auto gap-2 p-3 rounded-2xl ">
           {" "}
           <FaSearch className="my-auto" />{" "}
@@ -70,13 +71,20 @@ const Navbar = () => {
           {" "}
           Logout{" "}
         </button>{" "} */}
-        <img
-          src={ProfileImage}
-          alt="profile-image"
-          className="h-12 w-12 "
-          onClick={handleShowPopup}
-        />
-        {showPopup && <PopUpCard />}
+        <div className="relative">
+          <button onClick={handleShowPopup}>
+            <img
+              src={ProfileImage}
+              alt="profile-image"
+              className="h-12 w-12 rounded-full cursor-pointer"
+            />
+          </button>
+          {showPopup && (
+            <div className="absolute right-0 mt-2 z-50">
+              <PopUpCard />
+            </div>
+          )}
+        </div>
       </div>{" "}
     </div>
   );

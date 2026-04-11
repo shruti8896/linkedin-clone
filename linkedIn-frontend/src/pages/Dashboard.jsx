@@ -16,22 +16,23 @@ function Dashboard() {
     return (
       <main className="w-full mx-auto bg-[#ececda]">
         <Navbar />
-        <div className=" h-screen lg:w-[70%] mx-4 lg:mx-auto my-4 flex flex-col lg:flex-row gap-4">
+        <div className=" sticky h-screen lg:w-[70%] mx-4 lg:mx-auto my-4 flex flex-col lg:flex-row gap-4">
           <div className="flex-[2.5]">
             <UserProfile />
             <TryPremium />
           </div>
           <div className="flex-5">
             <CreatePost />
-            <Feed />
+            <Feed /> 
           </div>
           <div className="flex-[2.5]">
             <LinkedinNews />
           </div>
         </div>
-        ;
       </main>
     );
+  } else {
+    return <div>No user found</div>;
   }
 }
 

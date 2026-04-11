@@ -26,7 +26,7 @@ function PopUpCard() {
   }
   return (
     <div className="absolute top-full right-1 mt-1 z-50">
-      <div className="relative  md:w-72  w-44 p-2 flex flex-col gap-2 justify-center border items-center bg-gray-300/80 rounded-xl shadow-lg">
+      <div className="relative  md:w-72  w-44 p-2 flex flex-col gap-2 justify-center  items-center bg-gray-300 rounded-xl shadow-lg">
         {/* Arrow */}
         <img
           src={profileImage}
