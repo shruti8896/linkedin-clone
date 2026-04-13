@@ -16,14 +16,19 @@ function Dashboard() {
     return (
       <main className="w-full mx-auto bg-[#ececda]">
         <Navbar />
-        <div className=" sticky h-screen lg:w-[70%] mx-4 lg:mx-auto my-4 flex flex-col lg:flex-row gap-4">
+        <div className=" sticky min-h-screen lg:w-[70%] mx-4 lg:mx-auto my-4 flex flex-col lg:flex-row gap-4">
           <div className="flex-[2.5]">
-            <UserProfile />
+            <UserProfile
+              coverImageCss={`h-22`}
+              profileImageCSS={`w-16 h-16 overflow-hidden mt-1`}
+              divCSS={`-mt-10 -ml-1`}
+              bioCSS={`absolute mt-30 ml-2`}
+            />
             <TryPremium />
           </div>
           <div className="flex-5">
             <CreatePost />
-            <Feed /> 
+            <Feed />
           </div>
           <div className="flex-[2.5]">
             <LinkedinNews />

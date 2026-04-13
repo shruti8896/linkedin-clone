@@ -31,7 +31,7 @@ const Navbar = () => {
         {" "}
         <img src={navLogo} alt="logo" className="h-10 m-2 " />{" "}
         {/* TODO: make the search bar controlled ==> API Integration , deboucing, controlled state */}
-        <div className="flex border h-10 my-auto gap-2 p-3 rounded-2xl ">
+        <div className="flex md:border h-10 my-auto gap-2 p-3 rounded-2xl ">
           {" "}
           <FaSearch className="my-auto" />{" "}
           <input

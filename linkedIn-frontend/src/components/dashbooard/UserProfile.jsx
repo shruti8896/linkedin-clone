@@ -4,36 +4,52 @@ import { useUserContext } from "../../contexts/UserContext";
 import { FaCamera } from "react-icons/fa";
 import { GoPlusCircle } from "react-icons/go";
 import { useNavigate } from "react-router";
+import { MdModeEdit } from "react-icons/md";
 
-function UserProfile() {
+function UserProfile({ coverImageCss, profileImageCSS, bioCSS, divCSS }) {
   const navigate = useNavigate();
+  function handleEdit() {
+    alert("Working on it");
+  }
   const { currentUserData, loading } = useUserContext();
+
   if (loading) return <div>Loading...</div>;
   return (
-    <div className=" flex min-h-60 bg-white rounded-xl p-2 shadow-xl relative ">
-      <div className="w-full h-20 rounded bg-gray-500 overflow-hidden ">
-        <img src="" alt="" className="w-full" />
-        <FaCamera className=" m-2 text-slate-300 absolute right-2" size={16} />
+    <div className="w-full bg-white rounded-xl shadow-xl overflow-visible ">
+      {/* Cover Image */}
+      <div className={`w-full ${coverImageCss} bg-gray-500 relative`}>
+        <FaCamera
+          className="m-2 text-slate-300 absolute right-2 top-2"
+          size={16}
+        />
       </div>
 
-      <button
-        onClick={navigate("/user")}
-        className="w-16 h-16 rounded-full overflow-hidden mt-12 ml-2 absolute  border-white border-2"
-      >
-        <img src={profileImage} alt="profile-image" className="rounded-full" />
-        <GoPlusCircle size={20} className="" />
-      </button>
-      <div className="absolute mt-30 ml-2">
-        <h1 className="text-xl ">
-          {" "}
-          {currentUserData
-            ? currentUserData.data.user.username
-            : "Something is wrong"}
-        </h1>
-        <p className="text-xs">
-          Ex Product Engineer| Co-founder @Substring technologies
-        </p>
-        <p className="text-xs text-gray-500">Varanasi, Uttar Pradesh</p>
+      {/* Profile + Bio Section */}
+      <div className="px-4 pb-4">
+        {/* Profile Image */}
+        <div className={` mb-2 ${divCSS}`}>
+          <button
+            className={`rounded-full ${profileImageCSS} border-2 z-10 relative border-white`}
+          >
+            <img src={profileImage} alt="" className="rounded-full" />
+          </button>
+        </div>
+
+        {/* Bio */}
+        <div className=" flex ">
+          <div className="">
+            <h1 className="text-xl">
+              {currentUserData
+                ? currentUserData.data.user.username
+                : "Something is wrong"}
+            </h1>
+            <p className="text-xs">
+              Ex Product Engineer | Co-founder @Substring technologies
+            </p>
+            <p className="text-xs text-gray-500">Varanasi, Uttar Pradesh</p>
+          </div>
+          <MdModeEdit size={28} onClick={handleEdit} />
+        </div>
       </div>
     </div>
   );
