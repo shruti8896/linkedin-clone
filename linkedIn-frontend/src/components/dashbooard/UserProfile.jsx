@@ -5,11 +5,15 @@ import { FaCamera } from "react-icons/fa";
 import { GoPlusCircle } from "react-icons/go";
 import { useNavigate } from "react-router";
 import { MdModeEdit } from "react-icons/md";
+import { useProfileContext } from "../../contexts/ProfileContext";
 
 function UserProfile({ coverImageCss, profileImageCSS, bioCSS, divCSS }) {
+  const { setEditProfile, editProfile } = useProfileContext();
   const navigate = useNavigate();
+
   function handleEdit() {
-    alert("Working on it");
+    // alert("Working on it");
+    setEditProfile(true);
   }
   const { currentUserData, loading } = useUserContext();
 

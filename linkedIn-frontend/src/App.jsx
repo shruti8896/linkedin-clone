@@ -19,7 +19,7 @@ function App() {
           loading ? (
             <div>Loading...</div>
           ) : currentUserData ? (
-            <Dashboard />
+            <Navigate to="/dashboard" />
           ) : (
             <Navigate to="/login" />
           )
