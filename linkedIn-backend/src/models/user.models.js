@@ -28,6 +28,7 @@ const userSchema = mongoose.Schema(
     location: {
       type: String,
     },
+    skills: [],
     experience: [
       {
         company: String,
@@ -64,5 +65,6 @@ const userSchema = mongoose.Schema(
     timestamps: true,
   },
 );
+
 
 export default mongoose.model("User", userSchema);

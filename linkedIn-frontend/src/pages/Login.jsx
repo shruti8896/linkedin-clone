@@ -39,13 +39,16 @@ const Login = () => {
         const accessToken = response.data.accessToken;
         // console.log(accessToken);
         const user = response.data.user;
+        console.log(user)
         try {
           // console.log("Before login:", user);
           setCurrentUserAccessToken(accessToken);
           // 🔥 fetch user again
-          const currentUser = await getCurrentUser();
+          const currentUser = await getCurrentUser(); 
+      
 
           login(currentUser);
+         
 
           navigate("/dashboard");
 

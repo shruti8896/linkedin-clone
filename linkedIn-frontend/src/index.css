@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 .labelCSS{
-    @apply text-sm 
+    @apply text-sm
 }
 
 .inputCSS,textarea{
-    @apply  text-xl border focus:border-blue-800 hover:border-black hover:border-2 rounded-lg mb-8
+    @apply  text-sm  px-2 py-1 border focus:border-blue-800 hover:border-black hover:border-2 rounded-lg mb-8 
 }

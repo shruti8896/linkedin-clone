@@ -48,9 +48,15 @@ function UserProfile({ coverImageCss, profileImageCSS, bioCSS, divCSS }) {
                 : "Something is wrong"}
             </h1>
             <p className="text-xs">
-              Ex Product Engineer | Co-founder @Substring technologies
+              {currentUserData
+                ? currentUserData.data.user.headline
+                : "Something is wrong"}
             </p>
-            <p className="text-xs text-gray-500">Varanasi, Uttar Pradesh</p>
+            <p className="text-xs text-gray-500">
+              {currentUserData
+                ? currentUserData.data.user.location
+                : "Something is wrong"}
+            </p>
           </div>
           <MdModeEdit size={28} onClick={handleEdit} />
         </div>
