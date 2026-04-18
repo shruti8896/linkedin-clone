@@ -8,7 +8,8 @@ export const getCurrentUser = async () => {
         withCredentials: true,
       },
     );
-    return userData;
+    // console.log(userData);
+    return userData.data.user;
   } catch (error) {
     if (error?.status === 401) {
       console.log(error.status);
@@ -17,6 +18,3 @@ export const getCurrentUser = async () => {
     throw error;
   }
 };
-
-
-

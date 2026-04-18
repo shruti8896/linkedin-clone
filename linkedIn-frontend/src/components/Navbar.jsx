@@ -27,7 +27,7 @@ const Navbar = () => {
   return (
     <div className=" min-h-12 w-full bg-white ">
       {" "}
-      <div className="flex lg:w-[70%] justify-between  mx-auto items-center relative ">
+      <div className="flex lg:w-[70%] justify-between mx-auto items-center relative ">
         {" "}
         <img src={navLogo} alt="logo" className="h-10 m-2 " />{" "}
         {/* TODO: make the search bar controlled ==> API Integration , deboucing, controlled state */}
@@ -37,7 +37,7 @@ const Navbar = () => {
           <input
             type="text"
             placeholder="search"
-            className="md:w-60 w-20 focus:outline-none p-2"
+            className="md:w-60 w-0 focus:w-16 focus:outline-none p-2"
           />{" "}
         </div>{" "}
         <div className="flex gap-2  md:gap-8 items-center">
@@ -72,7 +72,7 @@ const Navbar = () => {
           Logout{" "}
         </button>{" "} */}
         <div className="relative">
-          <button onClick={handleShowPopup}>
+          <button onClick={handleShowPopup} className=" md:block hidden">
             <img
               src={ProfileImage}
               alt="profile-image"

@@ -15,7 +15,7 @@ function Dashboard() {
   if (loading) {
     return <div>Loading...</div>;
   }
-  if (currentUserData && currentUserData.data) {
+  if (currentUserData) {
     return (
       <main className="w-full mx-auto bg-[#ececda]">
         <Navbar />

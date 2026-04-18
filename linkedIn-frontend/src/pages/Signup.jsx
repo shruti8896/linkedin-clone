@@ -38,18 +38,20 @@ const Signup = () => {
     try {
       const data = await signUpUser(signUpData);
       // console.log(data);
-      if (data?.data) {
+      if (data) {
+        console.log(data);
         console.log("entered block");
         setLoading(false);
 
-        const user = data.data.user;
-        const accessToken = data.data.accessToken;
+        const user = data.user;
+        const accessToken = data.accessToken;
         console.log(accessToken);
         console.log(user);
         try {
           console.log("Before login:", user);
           setCurrentUserAccessToken(accessToken);
           const currentUser = await getCurrentUser();
+          console.log(currentUser);
 
           login(currentUser);
           navigate("/dashboard");
@@ -58,11 +60,12 @@ const Signup = () => {
         } catch (e) {
           console.error(" Signup error:", e);
         }
-        console.log("saving user done");
+        console.log(`saving user done`);
 
         //store the access token in local storage
       }
     } catch (error) {
+      console.log(error);
       console.log(error.response);
       setLoading(false);
 

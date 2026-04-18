@@ -34,21 +34,19 @@ const Login = () => {
       const response = await loginUser(loginData);
 
       console.log(response);
-      if (response?.data) {
+      if (response) {
         //store the accesstoken in local storage
-        const accessToken = response.data.accessToken;
-        // console.log(accessToken);
-        const user = response.data.user;
-        console.log(user)
+        const accessToken = response.accessToken;
+        console.log(accessToken);
+        const user = response.user;
+        console.log(user);
         try {
           // console.log("Before login:", user);
           setCurrentUserAccessToken(accessToken);
           // 🔥 fetch user again
-          const currentUser = await getCurrentUser(); 
-      
+          const currentUser = await getCurrentUser();
 
           login(currentUser);
-         
 
           navigate("/dashboard");
 

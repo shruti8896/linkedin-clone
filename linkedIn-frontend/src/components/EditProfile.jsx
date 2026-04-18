@@ -9,23 +9,6 @@ function EditProfile() {
   const { setEditProfile } = useProfileContext();
   const { currentUserData, setCurrentUserData } = useUserContext();
 
-  const [formData, setFormData] = useState({
-    firstname: "",
-    lastname: "",
-    username: "",
-    email: "",
-    headline: "",
-    bio: "",
-    contact: "",
-    location: "",
-    skills: "",
-    experience: {
-      company: "",
-      role: "",
-      description: "",
-    },
-  });
-
   // 🔥 handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,7 +17,7 @@ function EditProfile() {
     if (name.startsWith("exp.")) {
       const key = name.split(".")[1];
 
-      setFormData((prev) => ({
+      setCurrentUserData((prev) => ({
         ...prev,
         experience: {
           ...prev.experience,
@@ -42,24 +25,33 @@ function EditProfile() {
         },
       }));
     } else {
-      setFormData((prev) => ({
+      setCurrentUserData((prev) => ({
         ...prev,
         [name]: value,
       }));
     }
   };
 
+  //transform skill from array to string or vv
+
+  function getSkillData(skills) {
+    if (Array.isArray(skills)) {
+      return skills.map((s) => s.trim());
+    }
+
+    return skills.split(",").map((s) => s.trim());
+  }
+
   // 🔥 submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log(currentUserData.skills);
+
     // convert skills string → array
     const finalData = {
-      ...formData,
-      skills: formData.skills
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean),
+      ...currentUserData,
+      skills: getSkillData(currentUserData.skills),
     };
 
     console.log("FINAL DATA:", finalData);
@@ -96,23 +88,23 @@ function EditProfile() {
           <label className="labelCSS">First Name*</label>
           <input
             name="firstname"
-            value={currentUserData.data.user.firstname}
-            onChange={handleChange}
+            disabled={true}
+            value={currentUserData.firstname}
             className="inputCSS"
           />
 
           <label className="labelCSS">Last Name*</label>
           <input
             name="lastname"
-            value={currentUserData.data.user.lastname}
-            onChange={handleChange}
+            disabled={true}
+            value={currentUserData.lastname}
             className="inputCSS"
           />
 
           <label className="labelCSS">Username</label>
           <input
             name="username"
-            value={currentUserData.data.user.username}
+            value={currentUserData.username}
             onChange={handleChange}
             className="inputCSS"
           />
@@ -120,15 +112,15 @@ function EditProfile() {
           <label className="labelCSS">Email</label>
           <input
             name="email"
-            value={currentUserData.data.user.email}
-            onChange={handleChange}
+            disabled={true}
+            value={currentUserData.email}
             className="inputCSS"
           />
 
           <label className="labelCSS">Headline</label>
           <input
             name="headline"
-            value={currentUserData.data.user.headline}
+            value={currentUserData.headline}
             onChange={handleChange}
             className="inputCSS"
           />
@@ -136,7 +128,7 @@ function EditProfile() {
           <label className="labelCSS">Bio</label>
           <input
             name="bio"
-            value={currentUserData.data.user.bio}
+            value={currentUserData.bio}
             onChange={handleChange}
             className="inputCSS"
           />
@@ -144,7 +136,7 @@ function EditProfile() {
           <label className="labelCSS">Contact</label>
           <input
             name="contact"
-            value={currentUserData.data.user.contact}
+            value={currentUserData.contact}
             onChange={handleChange}
             className="inputCSS"
           />
@@ -152,7 +144,7 @@ function EditProfile() {
           <label className="labelCSS">Location</label>
           <input
             name="location"
-            value={currentUserData.data.user.location}
+            value={currentUserData.location}
             onChange={handleChange}
             className="inputCSS"
           />
@@ -160,7 +152,7 @@ function EditProfile() {
           <label className="labelCSS">Skills (comma separated)</label>
           <textarea
             name="skills"
-            value={currentUserData.data.user.skills}
+            value={currentUserData.skills}
             onChange={handleChange}
             className="inputCSS"
           />
@@ -171,7 +163,7 @@ function EditProfile() {
           <label className="labelCSS">Company</label>
           <input
             name="exp.company"
-            value={currentUserData.data.user.experience[0].company}
+            value={currentUserData.experience[0]?.company}
             onChange={handleChange}
             className="inputCSS"
           />
@@ -179,7 +171,7 @@ function EditProfile() {
           <label className="labelCSS">Role</label>
           <input
             name="exp.role"
-            value={currentUserData.data.user.experience[0].role}
+            value={currentUserData.experience[0]?.role}
             onChange={handleChange}
             className="inputCSS"
           />
@@ -187,7 +179,7 @@ function EditProfile() {
           <label className="labelCSS">Description</label>
           <input
             name="exp.description"
-            value={currentUserData.data.user.experience[0].description}
+            value={currentUserData.experience[0]?.description}
             onChange={handleChange}
             className="inputCSS"
           />

@@ -6,7 +6,7 @@ function NavItem({ icon, label, path }) {
     <NavLink
       to={path}
       className={({ isActive }) =>
-        `flex flex-col justify-center items-center  sm:my-auto ${isActive ? "text-gray-900" : "text-gray-600"}`
+        `flex flex-col justify-center items-center size-7 lg:size-10  sm:my-auto ${isActive ? "text-gray-900" : "text-gray-600"}`
       }
     >
       {icon}

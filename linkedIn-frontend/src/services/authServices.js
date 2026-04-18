@@ -13,7 +13,7 @@ export const signUpUser = async (userData) => {
     },
   );
 
-  return result;
+  return result.data;
 };
 
 export const loginUser = async (userData) => {
@@ -24,8 +24,9 @@ export const loginUser = async (userData) => {
       withCredentials: true,
     },
   );
+  console.log(result.data);
 
-  return result;
+  return result.data;
 };
 
 export const logoutUser = async (userData) => {

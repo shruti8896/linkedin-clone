@@ -44,17 +44,17 @@ function UserProfile({ coverImageCss, profileImageCSS, bioCSS, divCSS }) {
           <div className="">
             <h1 className="text-xl">
               {currentUserData
-                ? currentUserData.data.user.username
+                ? currentUserData.username
                 : "Something is wrong"}
             </h1>
             <p className="text-xs">
               {currentUserData
-                ? currentUserData.data.user.headline
+                ? currentUserData.headline
                 : "Something is wrong"}
             </p>
             <p className="text-xs text-gray-500">
               {currentUserData
-                ? currentUserData.data.user.location
+                ? currentUserData.location
                 : "Something is wrong"}
             </p>
           </div>

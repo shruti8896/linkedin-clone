@@ -33,6 +33,7 @@ export function UserProvider({ children }) {
   const value = useMemo(
     () => ({
       currentUserData,
+      setCurrentUserData,
       login,
       logout,
       loading,

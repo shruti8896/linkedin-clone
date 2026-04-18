@@ -35,9 +35,7 @@ function PopUpCard() {
         />
         <h2 className="text-2xl font-semibold text-blue-600">
           {" "}
-          {currentUserData
-            ? currentUserData.data.user.username
-            : "Something is wrong"}
+          {currentUserData ? currentUserData.username : "Something is wrong"}
         </h2>
         <button className="px-3 py-1 m-2 w-full  ring-2 ring-blue-500 rounded-2xl text-black">
           View Profile

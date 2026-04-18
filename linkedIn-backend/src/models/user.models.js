@@ -15,9 +15,15 @@ const userSchema = mongoose.Schema(
     password: { type: String, required: true },
     headline: {
       type: String,
+      default: "",
     },
     bio: {
       type: String,
+      default: "",
+    },
+    contact: {
+      type: Number,
+      default: 0,
     },
     profilePic: {
       type: String,
@@ -27,6 +33,7 @@ const userSchema = mongoose.Schema(
     },
     location: {
       type: String,
+      default: "",
     },
     skills: [],
     experience: [
@@ -65,6 +72,5 @@ const userSchema = mongoose.Schema(
     timestamps: true,
   },
 );
-
 
 export default mongoose.model("User", userSchema);
