@@ -8,6 +8,7 @@ import TryPremium from "../components/dashbooard/TryPremium";
 import CreatePost from "../components/dashbooard/CreatePost";
 import EditProfile from "../components/EditProfile";
 import { useProfileContext } from "../contexts/ProfileContext";
+import profileImage from "../assets/profile-picture.png";
 
 function Dashboard() {
   const { editProfile, setEditProfile } = useProfileContext();

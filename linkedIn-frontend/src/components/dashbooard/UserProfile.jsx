@@ -1,5 +1,5 @@
 import React from "react";
-import profileImage from "../../assets/shruti_dixit.png";
+import profileImage from "../../assets/profile-picture.png";
 import { useUserContext } from "../../contexts/UserContext";
 import { FaCamera } from "react-icons/fa";
 import { GoPlusCircle } from "react-icons/go";
@@ -22,6 +22,11 @@ function UserProfile({ coverImageCss, profileImageCSS, bioCSS, divCSS }) {
     <div className="w-full bg-white rounded-xl shadow-xl overflow-visible ">
       {/* Cover Image */}
       <div className={`w-full ${coverImageCss} bg-gray-500 relative`}>
+        <img
+          src={currentUserData.coverPic || null}
+          alt="coverPic"
+          className="w-full h-full"
+        />
         <FaCamera
           className="m-2 text-slate-300 absolute right-2 top-2"
           size={16}
@@ -35,7 +40,11 @@ function UserProfile({ coverImageCss, profileImageCSS, bioCSS, divCSS }) {
           <button
             className={`rounded-full ${profileImageCSS} border-2 z-10 relative border-white`}
           >
-            <img src={profileImage} alt="" className="rounded-full" />
+            <img
+              src={currentUserData.profilePic || profileImage}
+              alt=""
+              className="rounded-full"
+            />
           </button>
         </div>
 

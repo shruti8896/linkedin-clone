@@ -29,9 +29,9 @@ function PopUpCard() {
       <div className="relative  md:w-72  w-44 p-2 flex flex-col gap-2 justify-center  items-center bg-gray-300 rounded-xl shadow-lg">
         {/* Arrow */}
         <img
-          src={profileImage}
+          src={currentUserData.profilePic || profileImage}
           alt="profile-Image"
-          className="h-16 w-16 flex-1"
+          className="h-16 w-16 flex-1 rounded-full"
         />
         <h2 className="text-2xl font-semibold text-blue-600">
           {" "}

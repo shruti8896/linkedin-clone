@@ -17,7 +17,8 @@ import ProfileImage from "../assets/profile-picture.png";
 import { useState } from "react";
 
 const Navbar = () => {
-  const { setCurrentUserAccessToken, logout } = useUserContext();
+  const { setCurrentUserAccessToken, logout, currentUserData } =
+    useUserContext();
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
 
@@ -74,7 +75,7 @@ const Navbar = () => {
         <div className="relative">
           <button onClick={handleShowPopup} className=" md:block hidden">
             <img
-              src={ProfileImage}
+              src={currentUserData.profilePic || ProfileImage}
               alt="profile-image"
               className="h-12 w-12 rounded-full cursor-pointer"
             />

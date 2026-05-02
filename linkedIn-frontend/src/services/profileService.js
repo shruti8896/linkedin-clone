@@ -7,7 +7,9 @@ export const updateUserProfile = async (formdata) => {
       formdata,
       {
         withCredentials: true,
+        
       },
+      
     );
 
     return updatedInfo.data;

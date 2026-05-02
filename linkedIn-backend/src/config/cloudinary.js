@@ -3,7 +3,7 @@ import fs from "fs";
 
 async function uploadOnCloudniary(filePath) {
   cloudinary.config({
-    cloud_name: process.env.CLOUDINARY,
+    cloud_name: process.env.CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET,
   });
@@ -13,7 +13,7 @@ async function uploadOnCloudniary(filePath) {
       return null;
     }
     const uploadeImage = await cloudinary.uploader.upload(filePath);
-    fs.unlink(filePath);
+    fs.unlinkSync(filePath);
     console.log(uploadeImage);
 
     return uploadeImage.secure_url;
@@ -33,7 +33,9 @@ async function uploadOnCloudniary(filePath) {
 
     console.log(autoCropUrl);
   } catch (error) {
-    fs.unlink(filePath);
+    fs.unlinkSync(filePath);
     console.log(error);
   }
 }
+
+export default uploadOnCloudniary;

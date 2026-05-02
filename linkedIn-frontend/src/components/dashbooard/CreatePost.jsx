@@ -1,17 +1,23 @@
 import React from "react";
-import profileImage from "../../assets/shruti_dixit.png";
+import profileImage from "../../assets/profile-picture.png";
 import { BiSolidVideos } from "react-icons/bi";
 import { MdPhotoSizeSelectActual } from "react-icons/md";
 import { PiArticleNyTimesFill } from "react-icons/pi";
 import ActionButton from "../ActionButton";
 import { AiOutlineLike } from "react-icons/ai";
+import { useUserContext } from "../../contexts/UserContext";
 
 function CreatePost() {
+  const { currentUserData } = useUserContext();
   return (
     <div className="flex-col min-h-25 mb-3  bg-white rounded-xl p-2 shadow-xl">
       <div className="flex gap-3 ">
         <div className="h-12 w-12 rounded-full  ">
-          <img src={profileImage} alt="" className="h-12 w-12 rounded-full " />
+          <img
+            src={currentUserData.profilePic || profileImage}
+            alt=""
+            className="h-12 w-12 rounded-full "
+          />
         </div>
         <input
           type="text"

@@ -1,3 +1,4 @@
 /linkedin-backend/node_modules
+/linkedin-backend/public
 /linkedin-frontend/node_modules
 /linkedin-backend/.env
