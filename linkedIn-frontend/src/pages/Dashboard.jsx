@@ -9,6 +9,7 @@ import CreatePost from "../components/dashbooard/CreatePost";
 import EditProfile from "../components/EditProfile";
 import { useProfileContext } from "../contexts/ProfileContext";
 import profileImage from "../assets/profile-picture.png";
+import CreatePostPopup from "../components/CreatePostPopup";
 
 function Dashboard() {
   const { editProfile, setEditProfile } = useProfileContext();
@@ -20,6 +21,7 @@ function Dashboard() {
     return (
       <main className="w-full mx-auto bg-[#ececda]">
         <Navbar />
+        <CreatePostPopup />
         {editProfile && <EditProfile />}
         <div className=" sticky min-h-screen lg:w-[70%] mx-4 lg:mx-auto my-4 flex flex-col lg:flex-row gap-4">
           <div className="flex-[2.5]">
@@ -33,6 +35,7 @@ function Dashboard() {
           </div>
           <div className="flex-5">
             <CreatePost />
+            
             <Feed />
           </div>
           <div className="flex-[2.5]">
