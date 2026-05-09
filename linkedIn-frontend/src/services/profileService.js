@@ -7,11 +7,8 @@ export const updateUserProfile = async (formdata) => {
       formdata,
       {
         withCredentials: true,
-        
       },
-      
     );
-
     return updatedInfo.data;
   } catch (error) {
     console.error("Error updating profile:", error);

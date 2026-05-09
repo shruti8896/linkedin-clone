@@ -7,15 +7,18 @@ import AuthContext from "./contexts/AuthContext.jsx";
 import { Toaster } from "react-hot-toast";
 import { UserProvider } from "./contexts/UserContext.jsx";
 import { ProfileProvider } from "./contexts/ProfileContext.jsx";
+import { PostContextProvider } from "./contexts/posts.context.jsx";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <Toaster />
     <UserProvider>
       <AuthContext>
-        <ProfileProvider>
-          <App />
-        </ProfileProvider>
+        <PostContextProvider>
+          <ProfileProvider>
+            <App />
+          </ProfileProvider>
+        </PostContextProvider>
       </AuthContext>
     </UserProvider>
   </BrowserRouter>,

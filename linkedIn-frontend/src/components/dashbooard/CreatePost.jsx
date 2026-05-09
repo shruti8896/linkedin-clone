@@ -7,7 +7,7 @@ import ActionButton from "../ActionButton";
 import { AiOutlineLike } from "react-icons/ai";
 import { useUserContext } from "../../contexts/UserContext";
 
-function CreatePost() {
+function CreatePost({ openPopup }) {
   const { currentUserData } = useUserContext();
   return (
     <div className="flex-col min-h-25 mb-3  bg-white rounded-xl p-2 shadow-xl">
@@ -23,6 +23,7 @@ function CreatePost() {
           type="text"
           className="w-full rounded-full ring-1 mt-1 px-4 py-2"
           placeholder="Start a post...."
+          onClick={openPopup}
         />
       </div>
       <div className="w-[90%] flex gap-10 justify-around mt-5">

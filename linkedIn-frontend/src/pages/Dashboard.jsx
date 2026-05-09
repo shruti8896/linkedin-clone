@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useUserContext } from "../contexts/UserContext";
 import Navbar from "../components/Navbar";
 import UserProfile from "../components/dashbooard/UserProfile";
@@ -14,6 +14,7 @@ import CreatePostPopup from "../components/CreatePostPopup";
 function Dashboard() {
   const { editProfile, setEditProfile } = useProfileContext();
   const { currentUserData, loading } = useUserContext();
+  const [createPost, setCreatePost] = useState(false);
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -21,7 +22,9 @@ function Dashboard() {
     return (
       <main className="w-full mx-auto bg-[#ececda]">
         <Navbar />
-        <CreatePostPopup />
+        {createPost && (
+          <CreatePostPopup closePopup={() => setCreatePost(false)} />
+        )}
         {editProfile && <EditProfile />}
         <div className=" sticky min-h-screen lg:w-[70%] mx-4 lg:mx-auto my-4 flex flex-col lg:flex-row gap-4">
           <div className="flex-[2.5]">
@@ -34,8 +37,8 @@ function Dashboard() {
             <TryPremium />
           </div>
           <div className="flex-5">
-            <CreatePost />
-            
+            <CreatePost openPopup={() => setCreatePost(true)} />
+
             <Feed />
           </div>
           <div className="flex-[2.5]">

@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import authRouter from "./routes/auth.routes.js";
 import { userRouter } from "./routes/user.routes.js";
 import { profileRoutes } from "./routes/profile.routes.js";
+import { postRoutes } from "./routes/post.routes.js";
 const app = express();
 dotenv.config();
 
@@ -14,5 +15,6 @@ app.use(cookieParser());
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/user/currentuser", profileRoutes);
+app.use("/api/currentuser/post", postRoutes);
 
 export default app;

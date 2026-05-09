@@ -1,13 +1,15 @@
 import express from "express";
-import { createPost } from "../controllers/post.controller";
-import { getCurrentUserToken } from "../middlewares/auth.middleware";
-import upload from "../middlewares/multer";
+import { createPost, getPosts } from "../controllers/post.controller.js";
+import { getCurrentUserToken } from "../middlewares/auth.middleware.js";
+import upload from "../middlewares/multer.js";
 
-const postRouter = express.Router();
+export const postRoutes = express.Router();
 
-postRouter.post(
-  "/cerate",
+postRoutes.post(
+  "/createPost",
   getCurrentUserToken,
-  upload.single("images"),
+  upload.single("imageFile"),
   createPost,
 );
+
+postRoutes.get("/getPosts", getCurrentUserToken, getPosts);
