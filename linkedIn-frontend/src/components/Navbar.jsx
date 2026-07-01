@@ -26,7 +26,7 @@ const Navbar = () => {
     setShowPopup((currentState) => !currentState);
   }
   return (
-    <div className=" min-h-12 w-full bg-white ">
+    <div className=" min-h-12 w-full bg-white sticky top-0 ">
       {" "}
       <div className="flex lg:w-[70%] justify-between mx-auto items-center relative ">
         {" "}

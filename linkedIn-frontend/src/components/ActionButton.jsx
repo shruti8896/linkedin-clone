@@ -1,7 +1,7 @@
-const ActionButton = ({ icon, label, onClick }) => (
+const ActionButton = ({ icon, label, onClick, className }) => (
   <button
     onClick={onClick}
-    className="flex gap-2 items-center px-3 py-1 rounded-md hover:bg-gray-100 transition"
+    className={`flex gap-1 items-center px-3 rounded-md  transition ${className}`}
   >
     {icon}
     <span className="text-sm">{label}</span>

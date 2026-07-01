@@ -1,5 +1,10 @@
 import express from "express";
-import { createPost, getPosts } from "../controllers/post.controller.js";
+import {
+  commentPosts,
+  createPost,
+  getPosts,
+  likePosts,
+} from "../controllers/post.controller.js";
 import { getCurrentUserToken } from "../middlewares/auth.middleware.js";
 import upload from "../middlewares/multer.js";
 
@@ -13,3 +18,5 @@ postRoutes.post(
 );
 
 postRoutes.get("/getPosts", getCurrentUserToken, getPosts);
+postRoutes.get("/likePost/:id", getCurrentUserToken, likePosts);
+postRoutes.post("/commentPost/:id", getCurrentUserToken, commentPosts);

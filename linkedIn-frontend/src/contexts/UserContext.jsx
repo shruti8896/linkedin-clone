@@ -15,7 +15,7 @@ export function UserProvider({ children }) {
   useEffect(() => {
     async function fetchCurrentUser() {
       try {
-        console.log("running userContext:Fetching current User Data");
+        console.log("running userContext:Fetching current User Data............");
         const userData = await getCurrentUser();
         setCurrentUserData(userData);
       } catch (error) {

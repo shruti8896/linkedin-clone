@@ -19,7 +19,7 @@ function UserProfile({ coverImageCss, profileImageCSS, bioCSS, divCSS }) {
 
   if (loading) return <div>Loading...</div>;
   return (
-    <div className="w-full bg-white rounded-xl shadow-xl overflow-visible ">
+    <div className="w-full  bg-white rounded-xl shadow-xl overflow-visible ">
       {/* Cover Image */}
       <div className={`w-full ${coverImageCss} bg-gray-500 relative`}>
         <img
@@ -28,7 +28,7 @@ function UserProfile({ coverImageCss, profileImageCSS, bioCSS, divCSS }) {
           className="w-full h-full"
         />
         <FaCamera
-          className="m-2 text-slate-300 absolute right-2 top-2"
+          className="m-2 text-white absolute right-2 top-2"
           size={16}
         />
       </div>

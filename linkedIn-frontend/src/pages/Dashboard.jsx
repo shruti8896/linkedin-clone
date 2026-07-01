@@ -26,8 +26,8 @@ function Dashboard() {
           <CreatePostPopup closePopup={() => setCreatePost(false)} />
         )}
         {editProfile && <EditProfile />}
-        <div className=" sticky min-h-screen lg:w-[70%] mx-4 lg:mx-auto my-4 flex flex-col lg:flex-row gap-4">
-          <div className="flex-[2.5]">
+        <div className="  lg:w-[70%]  mx-4 lg:mx-auto my-4 items-start flex flex-col lg:flex-row gap-4">
+          <div className="flex-[2.5] w-full lg:w-auto lg:sticky top-20 lg:self-start  ">
             <UserProfile
               coverImageCss={`h-22`}
               profileImageCSS={`w-16 h-16 overflow-hidden mt-1`}
@@ -36,12 +36,12 @@ function Dashboard() {
             />
             <TryPremium />
           </div>
-          <div className="flex-5">
+          <div className="flex-5 w-full ">
             <CreatePost openPopup={() => setCreatePost(true)} />
 
             <Feed />
           </div>
-          <div className="flex-[2.5]">
+          <div className="flex-[2.5] w-full lg:w-auto  lg:sticky lg:top-20  lg:self-start">
             <LinkedinNews />
           </div>
         </div>

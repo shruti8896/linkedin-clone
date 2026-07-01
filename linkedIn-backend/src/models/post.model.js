@@ -5,15 +5,13 @@ const postSchema = mongoose.Schema(
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required:true
+      required: true,
     },
-    description:{
-      type:String,
-      default:""
-
+    description: {
+      type: String,
+      default: "",
     },
 
-    content: String,
     image: String,
 
     likes: [
@@ -25,8 +23,13 @@ const postSchema = mongoose.Schema(
 
     comments: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Comment",
+        comment: {
+          type: String,
+        },
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
       },
     ],
   },

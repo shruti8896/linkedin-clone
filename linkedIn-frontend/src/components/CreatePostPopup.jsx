@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { RxCross1 } from "react-icons/rx";
 import toast from "react-hot-toast";
 import ActionButton from "./ActionButton";
@@ -6,15 +6,30 @@ import { useUserContext } from "../contexts/UserContext";
 import profileImage from "../assets/profile-picture.png";
 import { FaImage } from "react-icons/fa6";
 import { createPost } from "../services/postService";
+import { usePostContext } from "../contexts/posts.context";
 
 function CreatePostPopup({ closePopup }) {
   const { currentUserData } = useUserContext();
   const [updating, setUpdating] = useState(false);
+  const { allPosts, setAllPosts } = usePostContext();
   const postPicture = useRef();
+  const textAreaRef = useRef();
   const [postData, setPostData] = useState({
     description: "",
     image: "",
     imageFile: null,
+  });
+
+  useEffect(() => {
+    textAreaRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
   });
 
   const handlePostData = (e) => {
@@ -57,6 +72,14 @@ function CreatePostPopup({ closePopup }) {
         image: "",
         imageFile: null,
       });
+
+      console.log(allPosts);
+
+      setAllPosts((prev) => ({
+        ...prev,
+        allPosts: [resp.message, ...prev.allPosts],
+      }));
+
       closePopup();
       // console.log(responseData);
     } catch (error) {
@@ -108,6 +131,7 @@ function CreatePostPopup({ closePopup }) {
             {/* Text Area */}
             <textarea
               name="postText"
+              ref={textAreaRef}
               placeholder="What do you want to talk about?"
               className="p-2 min-h-30 focus:outline-none border-none w-full resize-none"
               onChange={handlePostData}

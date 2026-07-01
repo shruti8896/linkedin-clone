@@ -18,6 +18,13 @@ export const createPostService = async (req) => {
         author: req.userId,
       });
     }
+
+    const populatedPost = await Post.findById(newPost._id).populate(
+      "author",
+      "firstname lastname username profilePic headline",
+    );
+
+    return populatedPost;
   } catch (error) {
     console.log("error in saving post");
     throw error;
@@ -26,10 +33,69 @@ export const createPostService = async (req) => {
 
 export const getAllPostsService = async (req) => {
   try {
-    const allPosts = await Post.find().populate("author");
-    return allPosts;
+    console.log(req);
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 10;
+    const allPosts = await Post.find()
+      .populate("author")
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    const totalPosts = await Post.countDocuments();
+
+    return {
+      allPosts,
+      currentPage: page,
+      totalPages: Math.ceil(totalPosts / limit),
+      hasMore: page * limit < totalPosts,
+    };
   } catch (error) {
     console.log("Error in fetching all posts from database");
+    throw error;
+  }
+};
+
+export const likePostService = async (postId, userId) => {
+  console.log(postId);
+  console.log(userId);
+  try {
+    let post = await Post.findById(postId);
+    console.log(post);
+    if (!post) {
+      throw new Error("No post found with this post ID");
+    }
+
+    if (post.likes.includes(userId)) {
+      console.log("Post found");
+      post.likes = post.likes.filter((id) => id != userId);
+    } else {
+      post.likes.push(userId);
+    }
+    return post.save();
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const commentPostService = async (postId, userId, comment) => {
+  try {
+    console.log(comment);
+    const post = await Post.findByIdAndUpdate(
+      postId,
+      {
+        $push: { comments: { comment, user: userId } },
+      },
+      { new: true },
+    ).populate("comments.user", "firstname lastname profileImage headline");
+    console.log(post);
+    if (!post) {
+      throw new Error(
+        "No such post found with the post id to add comments in it",
+      );
+    }
+    return post;
+  } catch (error) {
     throw error;
   }
 };

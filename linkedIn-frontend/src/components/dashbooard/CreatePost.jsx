@@ -16,14 +16,17 @@ function CreatePost({ openPopup }) {
           <img
             src={currentUserData.profilePic || profileImage}
             alt=""
-            className="h-12 w-12 rounded-full "
+            className="h-12 w-12 rounded-full"
           />
         </div>
         <input
           type="text"
           className="w-full rounded-full ring-1 mt-1 px-4 py-2"
           placeholder="Start a post...."
-          onClick={openPopup}
+          onClick={(e) => {
+            e.target.blur();
+            openPopup();
+          }}
         />
       </div>
       <div className="w-[90%] flex gap-10 justify-around mt-5">
