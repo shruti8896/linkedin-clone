@@ -42,10 +42,10 @@ export const likePosts = async (req, res) => {
     let userId = req.userId;
     const likePostResponse = await likePostService(postId, userId);
 
-    res.status(200).json({ message: likePostResponse });
+    return res.status(200).json({ message: likePostResponse });
   } catch (error) {
     console.log("Error in likePosts controller");
-    throw error;
+    return res.status(500).json({ message: error.message, stack: error.stack });
   }
 };
 

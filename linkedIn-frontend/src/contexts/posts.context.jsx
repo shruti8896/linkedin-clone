@@ -13,6 +13,7 @@ export const PostContext = createContext();
 export const PostContextProvider = ({ children }) => {
   const [allPosts, setAllPosts] = useState(null);
   const [loadingPosts, setLoadingPosts] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);  // next pages
   const { currentUserData } = useUserContext();
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -22,8 +23,10 @@ export const PostContextProvider = ({ children }) => {
         return;
       }
       setLoadingPosts(true);
+      setLoadingMore(true);
       // console.log("getting all Posts info...........");
       const allPostsData = await getAllPosts(page);
+      await new Promise((resolve) => setTimeout(resolve, 500));
       console.log(allPostsData);
       setAllPosts((prev) => {
         if (!prev) {
@@ -41,6 +44,7 @@ export const PostContextProvider = ({ children }) => {
       console.log(error);
     } finally {
       setLoadingPosts(false);
+      setLoadingMore(false);
     }
   }
 

@@ -1,5 +1,6 @@
 import {
   acceptConnectionService,
+  rejectConnectionService,
   sendConnectionService,
 } from "../services/connection.service.js";
 
@@ -47,7 +48,9 @@ export function acceptConnectionController(req, res) {
       connectionId,
     );
 
-    return res.status(201).json(connectionResponse);
+    return res
+      .status(200)
+      .json({ message: "connection accepted", connectionResponse });
   } catch (error) {
     return res.status(500).json({
       message: error.message,
@@ -55,3 +58,26 @@ export function acceptConnectionController(req, res) {
     });
   }
 }
+
+export function rejectConnectionController(req, res) {
+  try {
+    const { id, connectionId } = req.params;
+    const senderId = req.userId;
+
+    let connectionResponse = rejectConnectionService(
+      senderId,
+      id,
+      connectionId,
+    );
+
+    return res.status(200).json({ message: "connection rejected" });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+      stack: error.stack, // remove this later in production
+    });
+  }
+}
+
+export async function getConnectionStatusController(params) {}
+export async function removeConnectionController(params) {}

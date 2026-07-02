@@ -44,12 +44,13 @@ export const likePost = async (postId) => {
       `http://localhost:8080/api/post/likePost/${postId}`,
       { withCredentials: true },
     );
-    console.log(response.data.message);
+    // console.log(response.data.message);
     console.log("response");
     return response.data.message;
   } catch (error) {
     console.log("error in liking the post");
-    console.error(error);
+    console.log(error.response.status);
+    console.log(error.response.data, { depth: null });
     throw error;
   }
 };

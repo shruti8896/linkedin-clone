@@ -14,6 +14,8 @@ import { useUserContext } from "../../contexts/UserContext";
 import { commentPost, likePost } from "../../services/postService";
 import ActionButton from "../ActionButton";
 import { sendConnection } from "../../services/connectionService";
+import { motion } from "framer-motion";
+import PostSkeleton from "../PostSkeleton";
 
 function Feed() {
   const {
@@ -23,6 +25,7 @@ function Feed() {
     hasMore,
     page,
     getAllPostsInfo,
+    loadingMore,
   } = usePostContext();
   const { currentUserData } = useUserContext();
   const [activePostId, setActivePostId] = useState("");
@@ -37,7 +40,7 @@ function Feed() {
     console.log(response);
     console.log(currentUserData._id);
     let updatedPosts = allPosts.allPosts.map((post) => {
-      console.log(post);
+      // console.log(post);
       if (post._id == postId) {
         post = { ...post, likes: response.likes };
       }
@@ -115,7 +118,7 @@ function Feed() {
       observer.observe(loaderRef.current);
     }
     return () => observer.disconnect();
-  }, [hasMore, loadingPosts]);
+  }, [hasMore, loadingPosts, getAllPostsInfo]);
 
   async function handleSendConnection(id) {
     try {
@@ -128,7 +131,7 @@ function Feed() {
     } catch (error) {
       console.log(error.status);
       if (error.status === 403) {
-        console.log("jhvbsdyvvbhwevbsjhvvsvsvsvavaev");
+        // console.log("jhvbsdyvvbhwevbsjhvvsvsvsvavaev");
         console.log(error.response.data);
         alert(error.response.data);
       }
@@ -150,7 +153,13 @@ function Feed() {
       {allPosts?.allPosts?.map((post, index) => {
         const isLiked = post.likes.includes(currentUserData._id);
         return (
-          <div key={index} className="bg-white rounded-lg p-2 shadow-md mb-2">
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35 }}
+            key={index}
+            className="bg-white rounded-lg p-2 shadow-md mb-2"
+          >
             {/* {console.log(post)} */}
             <div key={index} className="flex gap-3 ">
               <div className="h-24 w-24 rounded-full mt-1 ">
@@ -232,7 +241,7 @@ function Feed() {
                 </div>
               )}
             </div>
-          </div>
+          </motion.div>
         );
       })}
 
