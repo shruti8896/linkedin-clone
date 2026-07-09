@@ -1,16 +1,17 @@
 import {
   acceptConnectionService,
+  pendingConnectionsService,
   rejectConnectionService,
   sendConnectionService,
 } from "../services/connection.service.js";
 
-export async function sendConnectionController(req, res) {
+export const sendConnectionController = async (req, res) => {
   try {
     const { reciever } = req.params;
     const senderId = req.userId;
     const sendConnectionResponse = await sendConnectionService(
-      reciever,
       senderId,
+      reciever,
     );
     console.log(sendConnectionResponse);
     if (sendConnectionResponse === "you are already connected") {
@@ -35,18 +36,18 @@ export async function sendConnectionController(req, res) {
       stack: error.stack, // remove this later in production
     });
   }
-}
+};
 
-export function acceptConnectionController(req, res) {
+export const acceptConnectionController = async (req, res) => {
   try {
-    const { id, connectionId } = req.params;
+    console.log("inside accept controller");
+    const { connectionId } = req.params;
     const senderId = req.userId;
 
-    let connectionResponse = acceptConnectionService(
-      senderId,
-      id,
-      connectionId,
-    );
+    console.log(connectionId);
+    console.log(`sender id ${senderId}`);
+
+    let connectionResponse = await acceptConnectionService(connectionId);
 
     return res
       .status(200)
@@ -57,16 +58,21 @@ export function acceptConnectionController(req, res) {
       stack: error.stack, // remove this later in production
     });
   }
-}
+};
 
-export function rejectConnectionController(req, res) {
+export async function rejectConnectionController(req, res) {
   try {
-    const { id, connectionId } = req.params;
+    console.log("________________________________________");
+    // console.log(req.params);
+    const connectionId = req.params.connectionId;
     const senderId = req.userId;
 
-    let connectionResponse = rejectConnectionService(
+    console.log(senderId);
+    console.log(connectionId);
+    console.log("in reject connection controller");
+
+    let connectionResponse = await rejectConnectionService(
       senderId,
-      id,
       connectionId,
     );
 
@@ -79,5 +85,16 @@ export function rejectConnectionController(req, res) {
   }
 }
 
-export async function getConnectionStatusController(params) {}
-export async function removeConnectionController(params) {}
+// export async function getConnectionStatusController(params) {}
+// export async function removeConnectionController(params) {}
+
+export const pendingConnectionsController = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    // console.log(userId);
+    const pendingRequests = await pendingConnectionsService(userId);
+    return res.status(200).json({ message: pendingRequests });
+  } catch (error) {
+    res.status(500).json({ mesage: error.message, stack: error.stack });
+  }
+};

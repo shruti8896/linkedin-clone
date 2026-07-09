@@ -54,7 +54,7 @@ const Signup = () => {
           console.log(currentUser);
 
           login(currentUser);
-          navigate("/dashboard");
+          navigate("/home");
 
           console.log("After login success");
         } catch (e) {

@@ -4,6 +4,7 @@ import {
   commentPostService,
   createPostService,
   getAllPostsService,
+  getPostsService,
   likePostService,
 } from "../services/post.service.js";
 
@@ -26,10 +27,19 @@ export const createPost = async (req, res) => {
   }
 };
 
-export const getPosts = async (req, res) => {
+export const getAllPosts = async (req, res) => {
   try {
     const allPosts = await getAllPostsService(req);
     return res.status(200).json({ success: true, ...allPosts });
+  } catch (error) {
+    return res.status(500).json({ message: error.message, stack: error.stack });
+  }
+};
+
+export const getPosts = async (req, res) => {
+  try {
+    const posts = await getPostsService(req);
+    return res.status(200).json({ success: true, ...posts });
   } catch (error) {
     return res.status(500).json({ message: error.message, stack: error.stack });
   }

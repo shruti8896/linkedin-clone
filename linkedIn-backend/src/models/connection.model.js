@@ -15,7 +15,7 @@ const connectionSchema = new mongoose.Schema(
     status: {
       type: String,
       default: "pending",
-      enum: ["pending", "approved", "rejected"],
+      enum: ["pending", "accepted", "rejected"],
     },
   },
   { timestamps: true },

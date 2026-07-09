@@ -8,46 +8,61 @@ import { FaUserGroup } from "react-icons/fa6";
 
 function PopUpCard() {
   const navigate = useNavigate();
-  const { currentUserData, loading, setCurrentUserAccessToken, logout } =
+
+  const { currentUserData, setCurrentUserAccessToken, logout } =
     useUserContext();
+
   async function handleLogout() {
     try {
-      const resp = await logoutUser();
-      console.log(resp);
-      //  clear frontend state
+      await logoutUser();
+
       setCurrentUserAccessToken(null);
       logout();
 
-      // redirect immediately
       navigate("/login");
     } catch (err) {
       console.log(err);
     }
   }
+
   return (
-    <div className="absolute top-full right-1 mt-1 z-50">
-      <div className="relative  md:w-72  w-44 p-2 flex flex-col gap-2 justify-center  items-center bg-gray-300 rounded-xl shadow-lg">
-        {/* Arrow */}
+    <div className="absolute top-full right-0 mt-3 z-999 w-72 rounded-xl border border-gray-200 bg-white shadow-2xl">
+      <div className="flex flex-col items-center p-5">
         <img
           src={currentUserData.profilePic || profileImage}
-          alt="profile-Image"
-          className="h-16 w-16 flex-1 rounded-full"
+          alt="profile"
+          className="h-20 w-20 rounded-full object-cover border"
         />
-        <h2 className="text-2xl font-semibold text-blue-600">
-          {" "}
-          {currentUserData ? currentUserData.username : "Something is wrong"}
+
+        <h2 className="mt-3 text-lg font-semibold">
+          {currentUserData?.username}
         </h2>
-        <button className="px-3 py-1 m-2 w-full  ring-2 ring-blue-500 rounded-2xl text-black">
+
+        <button
+          onClick={() => navigate("/profile")}
+          className="mt-4 w-full rounded-full border border-blue-600 py-2 font-medium text-blue-600 transition hover:bg-blue-50"
+        >
           View Profile
         </button>
-        <NavItem path={"/"} icon={<FaUserGroup size={28} />} label="Network" />
+
+        {/* <hr className="my-4 w-full" />
+
+        <div className="w-full">
+          <NavItem
+            path={"/"}
+            icon={<FaUserGroup size={22} />}
+            label="Network"
+          />
+        </div> */}
+
+        <hr className="my-4 w-full" />
+
         <button
-          className="px-3 py-1 m-2 ring-2 w-full ring-red-500 rounded-xl text-black "
           onClick={handleLogout}
+          className="w-full rounded-lg border border-red-500 py-2 font-medium text-red-500 transition hover:bg-red-50"
         >
-          {" "}
-          Logout{" "}
-        </button>{" "}
+          Logout
+        </button>
       </div>
     </div>
   );

@@ -31,6 +31,33 @@ export const createPostService = async (req) => {
   }
 };
 
+export const getPostsService = async (req) => {
+  const { userId } = req.params;
+  try {
+    console.log(req);
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const posts = await Post.find({ author: userId })
+      .populate("author")
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    const totalPosts = await Post.countDocuments({
+      author: userId,
+    });
+
+    return {
+      posts,
+      currentPage: page,
+      totalPages: Math.ceil(totalPosts / limit),
+      hasMorePosts: page * limit < totalPosts,
+    };
+  } catch (error) {
+    console.log("Error in fetching all posts from database");
+    throw error;
+  }
+};
 export const getAllPostsService = async (req) => {
   try {
     console.log(req);

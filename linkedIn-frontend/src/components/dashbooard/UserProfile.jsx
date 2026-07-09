@@ -6,20 +6,20 @@ import { GoPlusCircle } from "react-icons/go";
 import { useNavigate } from "react-router";
 import { MdModeEdit } from "react-icons/md";
 import { useProfileContext } from "../../contexts/ProfileContext";
+import { handleEdit } from "../../utils/helperFunctions";
 
 function UserProfile({ coverImageCss, profileImageCSS, bioCSS, divCSS }) {
   const { setEditProfile, editProfile } = useProfileContext();
   const navigate = useNavigate();
 
-  function handleEdit() {
-    // alert("Working on it");
-    setEditProfile(true);
-  }
   const { currentUserData, loading } = useUserContext();
 
   if (loading) return <div>Loading...</div>;
   return (
-    <div className="w-full  bg-white rounded-xl shadow-xl overflow-visible ">
+    <div
+      className="w-full  bg-white rounded-xl shadow-xl overflow-visible "
+      onClick={() => handleEdit(setEditProfile)}
+    >
       {/* Cover Image */}
       <div className={`w-full ${coverImageCss} bg-gray-500 relative`}>
         <img
@@ -27,10 +27,7 @@ function UserProfile({ coverImageCss, profileImageCSS, bioCSS, divCSS }) {
           alt="coverPic"
           className="w-full h-full"
         />
-        <FaCamera
-          className="m-2 text-white absolute right-2 top-2"
-          size={16}
-        />
+        <FaCamera className="m-2 text-white absolute right-2 top-2" size={16} />
       </div>
 
       {/* Profile + Bio Section */}
@@ -67,7 +64,7 @@ function UserProfile({ coverImageCss, profileImageCSS, bioCSS, divCSS }) {
                 : "Something is wrong"}
             </p>
           </div>
-          <MdModeEdit size={28} onClick={handleEdit} />
+          <MdModeEdit size={28} onClick={() => handleEdit(setEditProfile)} />
         </div>
       </div>
     </div>

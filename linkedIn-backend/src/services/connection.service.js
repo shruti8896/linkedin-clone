@@ -1,7 +1,7 @@
 import { Connection } from "../models/connection.model.js";
 import User from "../models/user.models.js";
 
-export async function sendConnectionService(senderId, recieverId) {
+export const sendConnectionService = async (senderId, recieverId) => {
   try {
     console.log("reaching sendConenctionService");
     if (senderId === recieverId) {
@@ -32,13 +32,9 @@ export async function sendConnectionService(senderId, recieverId) {
   } catch (error) {
     throw error;
   }
-}
+};
 
-export async function acceptConnectionService(
-  senderId,
-  recieverId,
-  connectionId,
-) {
+export const acceptConnectionService = async (connectionId) => {
   try {
     const connection = await Connection.findById(connectionId);
     if (!connection) {
@@ -50,6 +46,8 @@ export async function acceptConnectionService(
     }
 
     connection.status = "accepted";
+    let senderId = connection.sender;
+    let recieverId = connection.reciever;
     await connection.save();
 
     await Promise.all([
@@ -69,15 +67,13 @@ export async function acceptConnectionService(
   } catch (error) {
     throw error;
   }
-}
+};
 
-export async function rejectConnectionService(
-  senderId,
-  recieverId,
-  connectionId,
-) {
+export const rejectConnectionService = async (senderId, connectionId) => {
   try {
+    console.log("in reject service");
     const connection = await Connection.findById(connectionId);
+    console.log(connection);
     if (!connection) {
       throw new Error("No connection request found for accepting");
     }
@@ -93,9 +89,12 @@ export async function rejectConnectionService(
   } catch (error) {
     throw error;
   }
-}
+};
 
-export async function getConnectionStatusService(currentUserId, targetUserId) {
+export const getConnectionStatusService = async (
+  currentUserId,
+  targetUserId,
+) => {
   try {
     if (!currentUserId || !targetUserId) {
       throw new Error("no connection /connection request found");
@@ -133,12 +132,13 @@ export async function getConnectionStatusService(currentUserId, targetUserId) {
   } catch (error) {
     throw error;
   }
-}
+};
 
-async function removeConnection(myId, otherUserId) {
+export const removeConnection = async (myId, otherUserId) => {
   const session = await mongoose.startSession();
 
   try {
+    console.log("running service for remove connection");
     session.startTransaction();
 
     const [user1, user2] = await Promise.all([
@@ -176,4 +176,18 @@ async function removeConnection(myId, otherUserId) {
   } finally {
     session.endSession();
   }
-}
+};
+
+export const pendingConnectionsService = async (userId) => {
+  try {
+    console.log(userId);
+    const pendingRequests = await Connection.find({
+      reciever: userId,
+      status: "pending",
+    }).populate("sender", "firstname lastname profilePic headline location");
+
+    return pendingRequests;
+  } catch (error) {
+    throw error;
+  }
+};

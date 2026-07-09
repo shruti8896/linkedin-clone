@@ -7,11 +7,9 @@ function AuthContext({ children }) {
     serverURL,
   };
   return (
-    <div>
-      <authDataContext.Provider value={value}>
-        {children}
-      </authDataContext.Provider>
-    </div>
+    <authDataContext.Provider value={value}>
+      {children}
+    </authDataContext.Provider>
   );
 }
 

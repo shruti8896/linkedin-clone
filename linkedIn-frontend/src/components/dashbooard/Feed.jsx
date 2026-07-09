@@ -16,6 +16,8 @@ import ActionButton from "../ActionButton";
 import { sendConnection } from "../../services/connectionService";
 import { motion } from "framer-motion";
 import PostSkeleton from "../PostSkeleton";
+import toast from "react-hot-toast";
+import { getTimeAgo } from "../../utils/helperFunctions";
 
 function Feed() {
   const {
@@ -74,40 +76,6 @@ function Feed() {
     console.log(response);
   }
 
-  function getTimeAgo(createdAt) {
-    const now = new Date();
-    const created = new Date(createdAt);
-
-    const diffInSeconds = Math.floor((now - created) / 1000);
-
-    if (diffInSeconds < 60) {
-      return "Just now";
-    }
-
-    const diffInMinutes = Math.floor(diffInSeconds / 60);
-    if (diffInMinutes < 60) {
-      return `${diffInMinutes}m`;
-    }
-
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    if (diffInHours < 24) {
-      return `${diffInHours}h`;
-    }
-
-    const diffInDays = Math.floor(diffInHours / 24);
-    if (diffInDays < 30) {
-      return `${diffInDays}d`;
-    }
-
-    const diffInMonths = Math.floor(diffInDays / 30);
-    if (diffInMonths < 12) {
-      return `${diffInMonths}mo`;
-    }
-
-    const diffInYears = Math.floor(diffInMonths / 12);
-    return `${diffInYears}y`;
-  }
-
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting && hasMore && !loadingPosts) {
@@ -126,17 +94,19 @@ function Feed() {
         reciever: id,
         sender: currentUserData._id,
       });
+      toast.success("request sent");
       console.log(connectionResponse.sendConnectionResponse);
       console.log(connectionResponse.status);
     } catch (error) {
       console.log(error.status);
       if (error.status === 403) {
-        // console.log("jhvbsdyvvbhwevbsjhvvsvsvsvavaev");
         console.log(error.response.data);
         alert(error.response.data);
       }
     }
   }
+
+  console.log(currentUserData._id);
 
   if (loadingPosts || !allPosts) {
     return (
@@ -152,6 +122,9 @@ function Feed() {
 
       {allPosts?.allPosts?.map((post, index) => {
         const isLiked = post.likes.includes(currentUserData._id);
+        console.log(
+          `connections: ${post.author.username}and ${post.author.connections} and ${currentUserData._id} and ${post.author.connections.includes(currentUserData._id)}`,
+        );
         return (
           <motion.div
             initial={{ opacity: 0, y: 25 }}
@@ -167,6 +140,7 @@ function Feed() {
               </div>
               <div className="flex flex-col mt-1  ">
                 <h1 className="md ">{post.author.username || "DummyName"}</h1>
+
                 <p className="text-sm -mt-1">{post.author.headline || ""}</p>
                 <p className="text-sm -mt-1">{getTimeAgo(post.createdAt)}</p>
               </div>
@@ -175,12 +149,15 @@ function Feed() {
                 <p className="text-blue-500">Follow</p>
               </button> */}
 
-              <ActionButton
-                icon={<GoPlusCircle className="mt-1 text-blue-500" />}
-                label={"Follow"}
-                className={`cursor-pointer text-blue-500 h-10 hover:bg-gray-100`}
-                onClick={() => handleSendConnection(post.author._id)}
-              />
+              {post.author._id !== currentUserData._id &&
+                !post.author.connections.includes(currentUserData._id) && (
+                  <ActionButton
+                    icon={<GoPlusCircle className="mt-1 text-blue-500" />}
+                    label={"Follow"}
+                    className={`cursor-pointer text-blue-500 h-10 hover:bg-gray-100`}
+                    onClick={() => handleSendConnection(post.author._id)}
+                  />
+                )}
             </div>
 
             <div key={post._id} className="flex flex-col gap-3">

@@ -2,6 +2,7 @@ import express from "express";
 import { getCurrentUserToken } from "../middlewares/auth.middleware.js";
 import {
   acceptConnectionController,
+  pendingConnectionsController,
   rejectConnectionController,
   sendConnectionController,
 } from "../controllers/connection.controller.js";
@@ -22,4 +23,9 @@ connectionRoutes.get(
   "/reject/:connectionId",
   getCurrentUserToken,
   rejectConnectionController,
+);
+connectionRoutes.get(
+  "/pendingconnections/:userId",
+  getCurrentUserToken,
+  pendingConnectionsController,
 );

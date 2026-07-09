@@ -2,6 +2,7 @@ import express from "express";
 import {
   commentPosts,
   createPost,
+  getAllPosts,
   getPosts,
   likePosts,
 } from "../controllers/post.controller.js";
@@ -17,6 +18,7 @@ postRoutes.post(
   createPost,
 );
 
-postRoutes.get("/getPosts", getCurrentUserToken, getPosts);
+postRoutes.get("/getAllPosts", getCurrentUserToken, getAllPosts);
+postRoutes.get("/getPosts/:userId", getCurrentUserToken, getPosts);
 postRoutes.get("/likePost/:id", getCurrentUserToken, likePosts);
 postRoutes.post("/commentPost/:id", getCurrentUserToken, commentPosts);

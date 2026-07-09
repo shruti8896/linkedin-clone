@@ -24,7 +24,7 @@ export const getAllPosts = async (page = 1, limit = 10) => {
     console.log(page);
     console.log(limit);
     const response = await axios.get(
-      `http://localhost:8080/api/post/getPosts?page=${page}&limit=${limit}`,
+      `http://localhost:8080/api/post/getAllPosts?page=${page}&limit=${limit}`,
       { withCredentials: true },
     );
     console.log("-----------------------------------------");
@@ -33,6 +33,25 @@ export const getAllPosts = async (page = 1, limit = 10) => {
   } catch (error) {
     console.log("error in fetching all posts");
     console.log(error.response.data);
+    throw error;
+  }
+};
+
+export const getPosts = async (userId, page = 1, limit = 10) => {
+  try {
+    console.log("sending requests");
+    console.log(page);
+    console.log(limit);
+    const response = await axios.get(
+      `http://localhost:8080/api/post/getPosts/${userId}?page=${page}&limit=${limit}`,
+      { withCredentials: true },
+    );
+    console.log("-----------------------------------------");
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log("error in fetching all posts");
+    console.log(error.response);
     throw error;
   }
 };
