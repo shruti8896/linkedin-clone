@@ -1,3 +1,4 @@
+import { io } from "../app.js";
 import uploadOnCloudniary from "../config/cloudinary.js";
 import postModel from "../models/post.model.js";
 import {
@@ -51,6 +52,11 @@ export const likePosts = async (req, res) => {
     let postId = req.params.id;
     let userId = req.userId;
     const likePostResponse = await likePostService(postId, userId);
+
+    io.emit("likeUpdated", {
+      userPostId: postId,
+      likes: likePostResponse.likes,
+    });
 
     return res.status(200).json({ message: likePostResponse });
   } catch (error) {

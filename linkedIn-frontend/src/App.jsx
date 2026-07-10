@@ -56,69 +56,68 @@ function App() {
           )
         }
       />
-      const { currentUserData, loading } = useUserContext();
 
       <Route
         path="/connectionrequests"
         element={
           loading ? (
             <div>Loading...</div>
-    ) : currentUserData ? (
-      <ConnectionRequests />
-    ) : (
-      <Navigate to="/login" replace />
-    )
-  }
-/>
+          ) : currentUserData ? (
+            <ConnectionRequests />
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
       <Route
         path="/jobs"
         element={
           loading ? (
             <div>Loading...</div>
-    ) : currentUserData ? (
-      <Jobs />
-    ) : (
-      <Navigate to="/login" replace />
-    )
-  }
-/>
+          ) : currentUserData ? (
+            <Jobs />
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
 
- <Route
+      <Route
         path="/profile"
         element={
           loading ? (
             <div>Loading...</div>
-    ) : currentUserData ? (
-      <Profile />
-    ) : (
-      <Navigate to="/profile" replace />
-    )
-  }
-/>
- <Route
+          ) : currentUserData ? (
+            <Profile />
+          ) : (
+            <Navigate to="/profile" replace />
+          )
+        }
+      />
+      <Route
         path="/messages"
         element={
           loading ? (
             <div>Loading...</div>
-    ) : currentUserData ? (
-      <Messages />
-    ) : (
-      <Navigate to="/messages" replace />
-    )
-  }
-/>
- <Route
+          ) : currentUserData ? (
+            <Messages />
+          ) : (
+            <Navigate to="/messages" replace />
+          )
+        }
+      />
+      <Route
         path="/notifications"
         element={
           loading ? (
             <div>Loading...</div>
-    ) : currentUserData ? (
-      <Notifications />
-    ) : (
-      <Navigate to="/notifications" replace />
-    )
-  }
-/>
+          ) : currentUserData ? (
+            <Notifications />
+          ) : (
+            <Navigate to="/notifications" replace />
+          )
+        }
+      />
     </Routes>
   );
 }

@@ -18,6 +18,7 @@ import { motion } from "framer-motion";
 import PostSkeleton from "../PostSkeleton";
 import toast from "react-hot-toast";
 import { getTimeAgo } from "../../utils/helperFunctions";
+import { io } from "socket.io-client";
 
 function Feed() {
   const {
@@ -35,6 +36,8 @@ function Feed() {
   const [liked, setLiked] = useState(false);
 
   const loaderRef = useRef();
+
+  let socket = io("http://localhost:8080");
 
   async function handleLike(postId) {
     console.log("handlelike ran");
@@ -75,6 +78,27 @@ function Feed() {
     setComment("");
     console.log(response);
   }
+  useEffect(() => {
+    socket.on(
+      "likeUpdated",
+      ({ userPostId, likes }) => {
+        let updatedPosts = allPosts.allPosts.map((post) => {
+          // console.log(post);
+          if (post._id == userPostId) {
+            post = { ...post, likes: likes };
+          }
+          return post;
+        });
+
+        setAllPosts({ allPosts: updatedPosts });
+      },
+      [handleLike],
+    );
+
+    return () => {
+      socket.off("likeUpdated");
+    };
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
