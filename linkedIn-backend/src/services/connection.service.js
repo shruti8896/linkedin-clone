@@ -1,5 +1,6 @@
 import { Connection } from "../models/connection.model.js";
 import User from "../models/user.models.js";
+import { createNotificationService } from "./notification.service.js";
 
 export const sendConnectionService = async (senderId, recieverId) => {
   try {
@@ -27,6 +28,13 @@ export const sendConnectionService = async (senderId, recieverId) => {
     console.log("----------------New request-----");
 
     console.log(newRequest);
+
+    await createNotificationService({
+      recipient: recieverId,
+      sender: senderId,
+      type: "connection",
+      message: "sent you a connection request.",
+    });
 
     return newRequest;
   } catch (error) {
@@ -62,6 +70,13 @@ export const acceptConnectionService = async (connectionId) => {
         },
       }),
     ]);
+
+    await createNotificationService({
+      recipient: senderId,
+      sender: recieverId,
+      type: "connection",
+      message: "accepted your connection request.",
+    });
 
     return connection;
   } catch (error) {

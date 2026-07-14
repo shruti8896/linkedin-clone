@@ -3,8 +3,6 @@ import profileImage from "../assets/profile-picture.png";
 import { useUserContext } from "../contexts/UserContext";
 import { useNavigate } from "react-router";
 import { logoutUser } from "../services/authServices";
-import NavItem from "./NavItem";
-import { FaUserGroup } from "react-icons/fa6";
 
 function PopUpCard() {
   const navigate = useNavigate();
@@ -15,53 +13,86 @@ function PopUpCard() {
   async function handleLogout() {
     try {
       await logoutUser();
-
       setCurrentUserAccessToken(null);
       logout();
-
       navigate("/login");
     } catch (err) {
-      console.log(err);
+      console.error("Logout failed:", err);
     }
   }
 
+  if (!currentUserData) return null;
+
   return (
-    <div className="absolute top-full right-0 mt-3 z-999 w-72 rounded-xl border border-gray-200 bg-white shadow-2xl">
-      <div className="flex flex-col items-center p-5">
+    <div className="absolute right-0 mt-2 w-72 bg-white rounded-xl border border-gray-200 shadow-xl z-50 overflow-hidden flex flex-col animate-in fade-in duration-100">
+      {/* User Info Header Row */}
+      <div className="p-4 flex gap-3">
         <img
           src={currentUserData.profilePic || profileImage}
-          alt="profile"
-          className="h-20 w-20 rounded-full object-cover border"
+          alt="Avatar"
+          className="h-14 w-14 rounded-full object-cover border border-gray-100 flex-shrink-0"
         />
+        <div className="flex flex-col min-w-0 justify-center">
+          <h3 className="text-sm font-semibold text-gray-900 truncate">
+            {currentUserData.firstname} {currentUserData.lastname || ""}
+          </h3>
+          <p className="text-[11px] text-gray-500 line-clamp-2 mt-0.5 leading-tight">
+            {currentUserData.headline || "LinkedIn Member"}
+          </p>
+        </div>
+      </div>
 
-        <h2 className="mt-3 text-lg font-semibold">
-          {currentUserData?.username}
-        </h2>
-
+      {/* View Profile Action Button */}
+      <div className="px-4 pb-3">
         <button
           onClick={() => navigate("/profile")}
-          className="mt-4 w-full rounded-full border border-blue-600 py-2 font-medium text-blue-600 transition hover:bg-blue-50"
+          className="w-full border border-blue-600 text-blue-600 hover:bg-blue-50 font-bold text-xs py-1.5 px-3 rounded-full transition-colors cursor-pointer text-center"
         >
           View Profile
         </button>
+      </div>
 
-        {/* <hr className="my-4 w-full" />
+      {/* Account Section */}
+      <div className="border-t border-gray-100 flex flex-col py-1.5">
+        <h4 className="text-[11px] font-bold text-gray-800 px-4 py-1">Account</h4>
+        <button
+          onClick={() => navigate("/profile")}
+          className="text-left text-xs font-semibold text-gray-500 hover:text-blue-600 hover:bg-gray-50 px-4 py-1.5 transition-colors cursor-pointer"
+        >
+          Settings & Privacy
+        </button>
+        <button
+          onClick={() => navigate("/profile")}
+          className="text-left text-xs font-semibold text-gray-500 hover:text-blue-600 hover:bg-gray-50 px-4 py-1.5 transition-colors cursor-pointer"
+        >
+          Help & Support
+        </button>
+        <button
+          onClick={() => navigate("/profile")}
+          className="text-left text-xs font-semibold text-gray-500 hover:text-blue-600 hover:bg-gray-50 px-4 py-1.5 transition-colors cursor-pointer"
+        >
+          Language settings
+        </button>
+      </div>
 
-        <div className="w-full">
-          <NavItem
-            path={"/"}
-            icon={<FaUserGroup size={22} />}
-            label="Network"
-          />
-        </div> */}
+      {/* Manage Section */}
+      <div className="border-t border-gray-100 flex flex-col py-1.5">
+        <h4 className="text-[11px] font-bold text-gray-800 px-4 py-1">Manage</h4>
+        <button
+          onClick={() => navigate("/profile")}
+          className="text-left text-xs font-semibold text-gray-500 hover:text-blue-600 hover:bg-gray-50 px-4 py-1.5 transition-colors cursor-pointer"
+        >
+          Posts & Activity
+        </button>
+      </div>
 
-        <hr className="my-4 w-full" />
-
+      {/* Sign Out Button */}
+      <div className="border-t border-gray-100">
         <button
           onClick={handleLogout}
-          className="w-full rounded-lg border border-red-500 py-2 font-medium text-red-500 transition hover:bg-red-50"
+          className="w-full text-left text-xs font-semibold text-gray-500 hover:text-red-600 hover:bg-red-50/50 px-4 py-3 transition-colors cursor-pointer"
         >
-          Logout
+          Sign Out
         </button>
       </div>
     </div>

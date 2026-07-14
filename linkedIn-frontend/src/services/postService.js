@@ -79,7 +79,7 @@ export const commentPost = async (postId, comment) => {
   try {
     console.log("request sent");
     const response = await axios.post(
-      `http://localhost:8080/api/currentuser/post/commentPost/${postId}`,
+      `http://localhost:8080/api/post/commentPost/${postId}`,
       { comment },
       { withCredentials: true },
     );

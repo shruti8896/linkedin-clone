@@ -1,5 +1,6 @@
 import uploadOnCloudniary from "../config/cloudinary.js";
 import Post from "../models/post.model.js";
+import { createNotificationService } from "./notification.service.js";
 
 export const createPostService = async (req) => {
   try {
@@ -39,6 +40,7 @@ export const getPostsService = async (req) => {
     const limit = Number(req.query.limit) || 10;
     const posts = await Post.find({ author: userId })
       .populate("author")
+      .populate("comments.user", "firstname lastname username profilePic headline")
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(limit);
@@ -65,6 +67,7 @@ export const getAllPostsService = async (req) => {
     const limit = req.query.limit || 10;
     const allPosts = await Post.find()
       .populate("author")
+      .populate("comments.user", "firstname lastname username profilePic headline")
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(limit);
@@ -98,6 +101,14 @@ export const likePostService = async (postId, userId) => {
       post.likes = post.likes.filter((id) => id != userId);
     } else {
       post.likes.push(userId);
+      // Trigger notification
+      await createNotificationService({
+        recipient: post.author,
+        sender: userId,
+        type: "like",
+        post: post._id,
+        message: "liked your post.",
+      }).catch(err => console.error("Failed to trigger like notification: ", err));
     }
     return post.save();
   } catch (error) {
@@ -114,13 +125,21 @@ export const commentPostService = async (postId, userId, comment) => {
         $push: { comments: { comment, user: userId } },
       },
       { new: true },
-    ).populate("comments.user", "firstname lastname profileImage headline");
+    ).populate("comments.user", "firstname lastname profilePic headline");
     console.log(post);
     if (!post) {
       throw new Error(
         "No such post found with the post id to add comments in it",
       );
     }
+    // Trigger notification
+    await createNotificationService({
+      recipient: post.author,
+      sender: userId,
+      type: "comment",
+      post: post._id,
+      message: `commented: "${comment}"`,
+    }).catch(err => console.error("Failed to trigger comment notification: ", err));
     return post;
   } catch (error) {
     throw error;

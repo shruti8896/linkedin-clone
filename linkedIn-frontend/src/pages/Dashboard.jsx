@@ -20,28 +20,32 @@ function Dashboard() {
   }
   if (currentUserData) {
     return (
-      <main className="w-full mx-auto bg-[#ececda]">
+      <main className="w-full min-h-screen bg-[#f4f2ee]">
         <Navbar />
         {createPost && (
           <CreatePostPopup closePopup={() => setCreatePost(false)} />
         )}
         {editProfile && <EditProfile />}
-        <div className="  lg:w-[70%]  mx-4 lg:mx-auto my-4 items-start flex flex-col lg:flex-row gap-4">
-          <div className="flex-[2.5] w-full lg:w-auto lg:sticky top-20 lg:self-start ">
+        <div className="max-w-6xl mx-auto px-4 py-5 flex flex-col lg:flex-row gap-6 items-start">
+          {/* Left Column */}
+          <div className="w-full lg:w-[225px] flex-shrink-0 flex flex-col gap-3 lg:sticky lg:top-20">
             <UserProfile
-              coverImageCss={`h-22`}
-              profileImageCSS={`w-16 h-16 overflow-hidden mt-1`}
-              divCSS={`-mt-10 -ml-1`}
-              bioCSS={`absolute mt-30 ml-2`}
+              coverImageCss={`h-16`}
+              profileImageCSS={`w-16 h-16`}
+              divCSS={``}
+              bioCSS={``}
             />
             <TryPremium />
           </div>
-          <div className="flex-5 w-full ">
-            <CreatePost openPopup={() => setCreatePost(true)} />
 
+          {/* Middle Column: Feed */}
+          <div className="flex-1 w-full flex flex-col gap-4">
+            <CreatePost openPopup={() => setCreatePost(true)} />
             <Feed />
           </div>
-          <div className="flex-[2.5] w-full lg:w-auto  lg:sticky lg:top-20  lg:self-start">
+
+          {/* Right Column */}
+          <div className="w-full lg:w-[315px] flex-shrink-0 lg:sticky lg:top-20">
             <LinkedinNews />
           </div>
         </div>

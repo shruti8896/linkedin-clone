@@ -90,7 +90,7 @@ function App() {
           ) : currentUserData ? (
             <Profile />
           ) : (
-            <Navigate to="/profile" replace />
+            <Navigate to="/login" replace />
           )
         }
       />
@@ -102,10 +102,12 @@ function App() {
           ) : currentUserData ? (
             <Messages />
           ) : (
-            <Navigate to="/messages" replace />
+            <Navigate to="/login" replace />
           )
         }
       />
+
+
       <Route
         path="/notifications"
         element={
@@ -114,7 +116,7 @@ function App() {
           ) : currentUserData ? (
             <Notifications />
           ) : (
-            <Navigate to="/notifications" replace />
+            <Navigate to="/login" replace />
           )
         }
       />

@@ -1,13 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import profileImage from "../assets/profile-picture.png";
-import coverImage from "../assets/logo.svg"; // use any placeholder
 import { MdModeEdit } from "react-icons/md";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { HiUsers } from "react-icons/hi";
 import { useUserContext } from "../contexts/UserContext";
-import { useEffect } from "react";
 import { getPosts } from "../services/postService";
-import { useState } from "react";
 import { getTimeAgo, handleEdit } from "../utils/helperFunctions";
 import { useProfileContext } from "../contexts/ProfileContext";
 import EditProfile from "../components/EditProfile";
@@ -18,10 +15,9 @@ function Profile() {
   const [userPosts, setUserPosts] = useState(null);
   const [loadingUserPosts, setLoadingUserPosts] = useState(false);
   const [hasMorePosts, setHasMorePosts] = useState(true);
-  const [loadingMorePosts, setLoadingMorePosts] = useState(false); // next pages
   const [postsPage, setPostsPage] = useState(1);
   const { setEditProfile, editProfile } = useProfileContext();
-  // console.log(currentUserData);
+
   useEffect(() => {
     async function fetchUserPosts() {
       if (!currentUserData?._id) return;
@@ -31,16 +27,12 @@ function Profile() {
           return;
         }
         setLoadingUserPosts(true);
-        setLoadingMorePosts(true);
-        console.log("getting all Posts info...........");
         const userPostsData = await getPosts(
           currentUserData._id,
           postsPage,
-          10,
+          10
         );
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        console.log(userPostsData);
-        console.log(userPosts);
+        
         setUserPosts((prev) => {
           if (!prev) {
             return userPostsData;
@@ -53,180 +45,234 @@ function Profile() {
         setHasMorePosts(userPostsData.hasMorePosts);
         setPostsPage((prev) => prev + 1);
       } catch (error) {
-        console.log("erorr in fetching all posts");
-        console.log(error);
+        console.error("Error in fetching user posts:", error);
       } finally {
         setLoadingUserPosts(false);
-        setLoadingMorePosts(false);
       }
     }
 
     fetchUserPosts();
   }, [currentUserData, postsPage]);
 
-  return (
-    <div>
-      <Navbar />
-      <div className="max-w-5xl mx-auto my-6 space-y-5">
-        {/* Profile Header */}
-        <div className="bg-white rounded-xl shadow overflow-hidden">
-          {/* Cover */}
-          <div className="relative h-56 bg-gray-300">
-            <img
-              src={currentUserData.coverPic}
-              alt="cover"
-              className="h-full w-full object-cover"
-            />
+  if (!currentUserData) {
+    return (
+      <div className="w-full min-h-screen bg-[#f4f2ee]">
+        <Navbar />
+        <div className="flex justify-center items-center h-96">
+          <div className="w-8 h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      </div>
+    );
+  }
 
-            <button className="absolute top-4 right-4 bg-white p-2 rounded-full shadow hover:bg-gray-100">
-              <MdModeEdit size={20} />
+  return (
+    <div className="w-full min-h-screen bg-[#f4f2ee] pb-12">
+      <Navbar />
+      
+      {editProfile && <EditProfile />}
+
+      <div className="max-w-4xl mx-auto px-4 mt-6 flex flex-col gap-5">
+        
+        {/* Profile Header Card */}
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
+          {/* Cover Photo */}
+          <div className="relative h-48 bg-gradient-to-r from-blue-600 to-indigo-700">
+            {currentUserData.coverPic && (
+              <img
+                src={currentUserData.coverPic}
+                alt="cover"
+                className="h-full w-full object-cover"
+              />
+            )}
+            <button 
+              onClick={() => handleEdit(setEditProfile)}
+              className="absolute top-4 right-4 bg-white hover:bg-gray-100 p-2 rounded-full shadow-md text-gray-700 transition cursor-pointer"
+            >
+              <MdModeEdit size={16} />
             </button>
           </div>
 
-          {editProfile && <EditProfile />}
+          {/* Profile Details Container */}
+          <div className="relative px-6 pb-6 pt-16">
+            {/* Avatar Photo */}
+            <div className="absolute -top-16 left-6 w-28 h-28 rounded-full border-4 border-white overflow-hidden bg-white shadow-sm">
+              <img
+                src={currentUserData.profilePic || profileImage}
+                alt="profile"
+                className="w-full h-full object-cover"
+              />
+            </div>
 
-          {/* Profile */}
-          <div className="relative px-8 pb-6">
-            <img
-              src={currentUserData.profilePic}
-              alt="profile"
-              className="h-36 w-36 rounded-full border-4 border-white absolute -top-20 bg-white"
-            />
-
+            {/* Edit Button */}
             <button
-              className="absolute right-8 top-5 flex items-center gap-2 border border-blue-600 text-blue-600 px-5 py-2 rounded-full hover:bg-blue-50 transition"
+              className="absolute right-6 top-4 flex items-center gap-1 border border-blue-600 text-blue-600 px-4 py-1.5 rounded-full hover:bg-blue-50 font-bold text-xs transition cursor-pointer"
               onClick={() => handleEdit(setEditProfile)}
             >
-              <MdModeEdit />
-              Edit Profile
+              <MdModeEdit size={12} />
+              <span>Edit profile</span>
             </button>
 
-            <div className="pt-20">
-              <h1 className="text-3xl font-bold">
-                {currentUserData.firstname}
+            {/* User Meta text */}
+            <div className="flex flex-col">
+              <h1 className="text-xl font-bold text-gray-900">
+                {currentUserData.firstname} {currentUserData.lastname || ""}
               </h1>
-
-              <p className="text-gray-700 mt-1">{currentUserData.headline}</p>
-
-              <div className="flex items-center gap-6 mt-3 text-gray-500">
-                <div className="flex items-center gap-2">
-                  <FaMapMarkerAlt />
-                  {currentUserData.location}
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <HiUsers />
-                  {currentUserData.connections.length}
+              <p className="text-[13px] text-gray-700 mt-1 max-w-2xl leading-normal">
+                {currentUserData.headline || "LinkedIn Member"}
+              </p>
+              
+              <div className="flex items-center gap-4 mt-3.5 text-xs text-gray-500 font-medium">
+                {currentUserData.location && (
+                  <div className="flex items-center gap-1">
+                    <FaMapMarkerAlt className="text-gray-400" />
+                    <span>{currentUserData.location}</span>
+                  </div>
+                )}
+                <div className="flex items-center gap-1 hover:text-blue-600 hover:underline cursor-pointer">
+                  <HiUsers className="text-gray-400" size={14} />
+                  <span>{currentUserData.connections?.length || 0} connections</span>
                 </div>
               </div>
 
-              <div className="flex gap-3 mt-6">
-                <button className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700">
-                  Open to Work
+              {/* Action Buttons Row */}
+              <div className="flex gap-2.5 mt-5">
+                <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs py-1.5 px-4 rounded-full transition-colors cursor-pointer shadow-xs">
+                  Open to work
                 </button>
-
-                <button className="border border-gray-400 px-6 py-2 rounded-full hover:bg-gray-100">
-                  Share Profile
+                <button className="border border-gray-300 hover:bg-gray-100 text-gray-700 font-semibold text-xs py-1.5 px-4 rounded-full transition-colors cursor-pointer">
+                  Share profile
                 </button>
               </div>
             </div>
           </div>
         </div>
 
-        {/* About */}
-        <div className="bg-white rounded-xl shadow p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">About</h2>
-            <MdModeEdit className="cursor-pointer" />
+        {/* About Section */}
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex flex-col">
+          <div className="flex justify-between items-center mb-3">
+            <h2 className="text-sm font-semibold text-gray-800">About</h2>
+            <button 
+              onClick={() => handleEdit(setEditProfile)}
+              className="p-1.5 hover:bg-gray-100 rounded-full text-gray-500 hover:text-gray-800 transition cursor-pointer"
+            >
+              <MdModeEdit size={14} />
+            </button>
           </div>
 
-          <p className="text-gray-700 leading-7">
+          <p className="text-[12.5px] text-gray-700 leading-relaxed whitespace-pre-line">
             {currentUserData.bio ||
-              `Passionate Full Stack Developer with experience building scalable MERN
-          applications. I enjoy solving real-world problems and creating
-          intuitive user experiences.`}
+              "Write a short summary about your professional background, skills, and aspirations."}
           </p>
         </div>
 
-        {/* Skills */}
-        <div className="bg-white rounded-xl shadow p-6">
+        {/* Skills Section */}
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex flex-col">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">Skills</h2>
-            <MdModeEdit className="cursor-pointer" />
-          </div>
-
-          <div className="flex flex-wrap gap-3">
-            {currentUserData.skills.map((skill) => (
-              <span
-                key={skill}
-                className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium"
-              >
-                {skill}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Experience */}
-        <div className="bg-white rounded-xl shadow p-6">
-          <div className="flex justify-between items-center mb-5">
-            <h2 className="text-xl font-semibold">Experience</h2>
-            <MdModeEdit className="cursor-pointer" />
-          </div>
-
-          {currentUserData.experience.map((exp, key) => (
-            <div className="border-l-2 border-blue-600 pl-6 relative">
-              <div className="absolute h-4 w-4 rounded-full bg-blue-600 -left-[9px] top-1"></div>
-
-              <h3 className="font-semibold text-lg">{exp.role}</h3>
-
-              <p className="text-gray-600">{exp.company}</p>
-
-              <p className="text-gray-500 text-sm mb-3">Jan 2024 - Present</p>
-
-              <p className="text-gray-700">
-                {exp.description ||
-                  `Building scalable MERN applications, REST APIs, authentication
-              systems and real-time features.`}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        {/* Activity */}
-        <div className="bg-white rounded-xl shadow p-6">
-          <div className="flex justify-between items-center mb-5">
-            <h2 className="text-xl font-semibold">Activity</h2>
-
-            <button className="text-blue-600 font-medium">
-              View All Posts
+            <h2 className="text-sm font-semibold text-gray-800">Skills</h2>
+            <button 
+              onClick={() => handleEdit(setEditProfile)}
+              className="p-1.5 hover:bg-gray-100 rounded-full text-gray-500 hover:text-gray-800 transition cursor-pointer"
+            >
+              <MdModeEdit size={14} />
             </button>
           </div>
 
-          <div className="space-y-4">
-            {userPosts?.posts?.map((item, index) => (
-              <div key={index} className="border rounded-xl p-4">
-                <div className="flex gap-3 items-center">
-                  <img
-                    src={currentUserData.profilePic}
-                    className="h-12 w-12 rounded-full"
-                    alt=""
-                  />
+          {currentUserData.skills && currentUserData.skills.length > 0 ? (
+            <div className="flex flex-wrap gap-2">
+              {currentUserData.skills.map((skill) => (
+                <span
+                  key={skill}
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold px-3 py-1.5 rounded-full border border-gray-200 transition-colors"
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <p className="text-xs text-gray-500 italic">No skills listed yet.</p>
+          )}
+        </div>
 
-                  <div>
-                    <h4 className="font-semibold">{item.firstname}</h4>
+        {/* Experience Section */}
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex flex-col">
+          <div className="flex justify-between items-center mb-5">
+            <h2 className="text-sm font-semibold text-gray-800">Experience</h2>
+            <button 
+              onClick={() => handleEdit(setEditProfile)}
+              className="p-1.5 hover:bg-gray-100 rounded-full text-gray-500 hover:text-gray-800 transition cursor-pointer"
+            >
+              <MdModeEdit size={14} />
+            </button>
+          </div>
 
-                    <p className="text-sm text-gray-500">
-                      {getTimeAgo(item.createdAt)}
-                    </p>
+          {currentUserData.experience && currentUserData.experience.length > 0 ? (
+            <div className="flex flex-col gap-6">
+              {currentUserData.experience.map((exp, idx) => (
+                <div key={exp._id || idx} className="flex gap-4 items-start relative">
+                  {/* Left Timeline Indicator */}
+                  <div className="w-10 h-10 bg-gray-100 rounded border border-gray-200 flex-shrink-0 flex items-center justify-center font-bold text-gray-600 text-xs">
+                    {exp.company?.substring(0, 2).toUpperCase() || "WP"}
+                  </div>
+
+                  <div className="flex flex-col min-w-0">
+                    <h3 className="font-semibold text-xs text-gray-900">{exp.role}</h3>
+                    <p className="text-xs text-gray-600 font-medium mt-0.5">{exp.company}</p>
+                    <p className="text-[10px] text-gray-400 mt-0.5">Jan 2024 - Present</p>
+                    {exp.description && (
+                      <p className="text-[11.5px] text-gray-700 leading-relaxed mt-2 max-w-2xl break-words">
+                        {exp.description}
+                      </p>
+                    )}
                   </div>
                 </div>
-
-                <p className="mt-4 text-gray-700">{item.description}</p>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-xs text-gray-500 italic">No experience entries yet.</p>
+          )}
         </div>
+
+        {/* Activity Section */}
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex flex-col">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-sm font-semibold text-gray-800">Activity</h2>
+            <button className="text-blue-600 hover:text-blue-800 font-semibold text-xs cursor-pointer">
+              View all posts
+            </button>
+          </div>
+
+          {userPosts?.posts && userPosts.posts.length > 0 ? (
+            <div className="flex flex-col gap-4">
+              {userPosts.posts.slice(0, 2).map((item, index) => (
+                <div key={item._id || index} className="border border-gray-200 rounded-xl p-4 flex flex-col bg-white">
+                  <div className="flex gap-2.5 items-center">
+                    <img
+                      src={currentUserData.profilePic || profileImage}
+                      className="h-10 w-10 rounded-full object-cover border border-gray-200"
+                      alt="avatar"
+                    />
+                    <div className="flex flex-col min-w-0">
+                      <h4 className="font-semibold text-xs text-gray-900 truncate">
+                        {currentUserData.firstname} {currentUserData.lastname || ""}
+                      </h4>
+                      <p className="text-[10px] text-gray-400 mt-0.5">
+                        {getTimeAgo(item.createdAt)}
+                      </p>
+                    </div>
+                  </div>
+                  <p className="mt-3 text-xs text-gray-700 leading-relaxed break-words">
+                    {item.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-xs text-gray-500 py-4 text-center">
+              No recent activity posts.
+            </p>
+          )}
+        </div>
+
       </div>
     </div>
   );
