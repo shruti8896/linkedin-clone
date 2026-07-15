@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/messages";
+const API_URL = `${import.meta.env.BACKEND_URL}/api/messages`;
 
 /**
  * Fetch all conversations for the current user

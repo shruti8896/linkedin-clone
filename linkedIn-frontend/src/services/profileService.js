@@ -3,7 +3,7 @@ import axios from "axios";
 export const updateUserProfile = async (formdata) => {
   try {
     const updatedInfo = await axios.put(
-      "http://localhost:8080/api/user/currentuser/updateProfile",
+      `${import.meta.env.BACKEND_URL}/api/user/currentuser/updateProfile`,
       formdata,
       {
         withCredentials: true,

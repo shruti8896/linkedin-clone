@@ -6,7 +6,7 @@ console.log(url);
 
 export const signUpUser = async (userData) => {
   let result = await axios.post(
-    "http://localhost:8080/api/auth/signup",
+    `${import.meta.env.BACKEND_URL}/api/auth/signup`,
     userData,
     {
       withCredentials: true,
@@ -18,7 +18,7 @@ export const signUpUser = async (userData) => {
 
 export const loginUser = async (userData) => {
   let result = await axios.post(
-    "http://localhost:8080/api/auth/login",
+    `${import.meta.env.BACKEND_URL}/api/auth/login`,
     userData,
     {
       withCredentials: true,
@@ -31,7 +31,7 @@ export const loginUser = async (userData) => {
 
 export const logoutUser = async (userData) => {
   let result = await axios.post(
-    "http://localhost:8080/api/auth/logout",
+    `${import.meta.env.BACKEND_URL}/api/auth/logout`,
     userData,
     {
       withCredentials: true,

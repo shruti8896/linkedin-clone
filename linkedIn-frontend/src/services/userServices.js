@@ -3,7 +3,7 @@ import axios from "axios";
 export const getCurrentUser = async () => {
   try {
     const userData = await axios.get(
-      "http://localhost:8080/api/user/currentuser",
+      `${import.meta.env.BACKEND_URL}/api/user/currentuser`,
       {
         withCredentials: true,
       },
