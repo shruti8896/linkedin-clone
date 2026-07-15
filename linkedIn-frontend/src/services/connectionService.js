@@ -3,7 +3,7 @@ import axios from "axios";
 export async function sendConnection({ reciever, sender }) {
   try {
     const response = await axios.get(
-      `${import.meta.env.BACKEND_URL}/api/connection/send/${reciever}`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/connection/send/${reciever}`,
       {
         withCredentials: true,
       },
@@ -21,7 +21,7 @@ export async function acceptConnection(connectionId) {
   try {
     console.log(connectionId);
     const response = await axios.get(
-      `${import.meta.env.BACKEND_URL}/api/connection/accept/${connectionId}`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/connection/accept/${connectionId}`,
       {
         withCredentials: true,
       },
@@ -39,7 +39,7 @@ export async function acceptConnection(connectionId) {
 export async function rejectConnection(connectionId) {
   try {
     const response = await axios.get(
-      `${import.meta.env.BACKEND_URL}/api/connection/reject/${connectionId}`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/connection/reject/${connectionId}`,
       {
         withCredentials: true,
       },
@@ -56,7 +56,7 @@ export async function rejectConnection(connectionId) {
 export async function pendingconnections(userId) {
   try {
     const response = await axios.get(
-      `${import.meta.env.BACKEND_URL}/api/connection/pendingconnections/${userId}`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/connection/pendingconnections/${userId}`,
       {
         withCredentials: true,
       },

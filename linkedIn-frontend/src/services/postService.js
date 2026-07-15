@@ -3,7 +3,7 @@ import axios from "axios";
 export const createPost = async (postData) => {
   try {
     const response = await axios.post(
-      `${import.meta.env.BACKEND_URL}/api/post/createPost`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/post/createPost`,
       postData,
       {
         withCredentials: true,
@@ -24,7 +24,7 @@ export const getAllPosts = async (page = 1, limit = 10) => {
     console.log(page);
     console.log(limit);
     const response = await axios.get(
-      `${import.meta.env.BACKEND_URL}/api/post/getAllPosts?page=${page}&limit=${limit}`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/post/getAllPosts?page=${page}&limit=${limit}`,
       { withCredentials: true },
     );
     console.log("-----------------------------------------");
@@ -43,7 +43,7 @@ export const getPosts = async (userId, page = 1, limit = 10) => {
     console.log(page);
     console.log(limit);
     const response = await axios.get(
-      `${import.meta.env.BACKEND_URL}/api/post/getPosts/${userId}?page=${page}&limit=${limit}`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/post/getPosts/${userId}?page=${page}&limit=${limit}`,
       { withCredentials: true },
     );
     console.log("-----------------------------------------");
@@ -60,7 +60,7 @@ export const likePost = async (postId) => {
   try {
     console.log("likePost ran");
     const response = await axios.get(
-      `${import.meta.env.BACKEND_URL}/api/post/likePost/${postId}`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/post/likePost/${postId}`,
       { withCredentials: true },
     );
     // console.log(response.data.message);
@@ -79,7 +79,7 @@ export const commentPost = async (postId, comment) => {
   try {
     console.log("request sent");
     const response = await axios.post(
-      `${import.meta.env.BACKEND_URL}/api/post/commentPost/${postId}`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/post/commentPost/${postId}`,
       { comment },
       { withCredentials: true },
     );

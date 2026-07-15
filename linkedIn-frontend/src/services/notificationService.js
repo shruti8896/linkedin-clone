@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = `${import.meta.env.BACKEND_URL}/api/notification`;
+const API_URL = `${import.meta.env.VITE_BACKEND_URL}/api/notification`;
 
 export const getNotifications = async () => {
     try {

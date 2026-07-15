@@ -3,7 +3,7 @@ import axios from "axios";
 export const updateUserProfile = async (formdata) => {
   try {
     const updatedInfo = await axios.put(
-      `${import.meta.env.BACKEND_URL}/api/user/currentuser/updateProfile`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/user/currentuser/updateProfile`,
       formdata,
       {
         withCredentials: true,
