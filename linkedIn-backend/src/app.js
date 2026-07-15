@@ -16,13 +16,23 @@ import { initSocket } from "./config/socket.js";
 const app = express();
 export const server = http.createServer(app);
 export const io = new Server(server, {
-  cors: { origin: "http://localhost:5173", credentials: true },
+  cors: {
+    origin:
+      "http://localhost:5173,https://linkedin-clone-delta-three.vercel.app/",
+    credentials: true,
+  },
 });
 initSocket(io);
 dotenv.config();
 
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(
+  cors({
+    origin:
+      "http://localhost:5173,https://linkedin-clone-delta-three.vercel.app/",
+    credentials: true,
+  }),
+);
 app.use(cookieParser());
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
